@@ -11,20 +11,20 @@
 {{--    @vite(['resources/js/app.js'])--}}
 </head>
 <body>
-<?php
-$action = app('request')->route()->getAction();
-$controller = class_basename($action['controller']);
-list($controller, $action) = explode('@', $controller);
-?>
+    <?php
+    $action = app('request')->route()->getAction();
+    $controller = class_basename($action['controller']);
+    list($controller, $action) = explode('@', $controller);
+    ?>
 
-@include('admin.includes.sidebar')
+    @include('admin.includes.sidebar')
 
-<div class="content-wrapper">
-    @include('admin/includes/navbar')
-    <div class="main-container">
-        @include('admin.includes.messages')
-        @yield('content')
+    <div class="container">
+        @include('admin/includes/navbar')
+        <div class="main-container">
+            @include('admin.includes.messages')
+            @yield('content')
+        </div>
     </div>
-</div>
 </body>
 </html>

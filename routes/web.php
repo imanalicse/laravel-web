@@ -20,6 +20,7 @@ Route::post('/login', [LoginController::class, 'authenticate'])->name('login.sub
 Route::get('/registration', [RegisterController::class,'registration'])->name("registration");
 Route::post('/registration', [RegisterController::class, 'registrationSubmit'])->name('registration.submit');
 
+Route::get('/home', [PageController::class, 'home'])->name('home');
 Route::get('/profile', [PageController::class, 'profile'])->name('profile')->middleware('auth.basic');
 
 Route::prefix('admin')->group(static function() {
