@@ -12,11 +12,11 @@
      @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <header>
             Header
         </header>
-        <div class="container">
+        <div class="content">
             @yield('content')
         </div>
         <footer>

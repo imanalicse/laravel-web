@@ -1,3 +1,2 @@
-body {
-    background: #a0aec0;
-}
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
