@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use Illuminate\Database\Connection;
+use Illuminate\Database\Events\QueryExecuted;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Database\Eloquent\Model;
@@ -25,5 +29,20 @@ class AppServiceProvider extends ServiceProvider
     {
         Vite::macro('image', fn (string $asset) => $this->asset("resources/images/{$asset}"));
         Model::preventSilentlyDiscardingAttributes($this->app->isLocal()); // Mass Assignment Exceptions - local
+
+        // Listening for Query Events
+        DB::listen(function (QueryExecuted $query) {
+            // $query->sql;
+            // $query->bindings;
+            // $query->time;
+            // $query->toRawSql();
+        });
+
+        // Monitoring Cumulative Query Time
+        DB::whenQueryingForLongerThan(500, function (Connection $connection, QueryExecuted $event) {
+            // Notify development team...
+            Log::info("Occurred_whenQueryingForLongerThan");
+        });
+
     }
 }
