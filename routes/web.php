@@ -33,5 +33,22 @@ Route::prefix('admin')->group(static function() {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/users', [UsersController::class, 'index']);
         Route::resource('products', ProductController::class);
+
+        // Start: Password confirm
+        Route::get('/confirm-password', function () {
+            return view('auth.admin.confirm-password');
+        })->middleware('auth:admin')->name('password.confirm');
+
+        Route::post('/confirm-password', [LoginController::class, 'confirmPassword'])->middleware(['auth', 'throttle:6,1']);
+
+        Route::get('/settings', function () {
+            return 'setting';
+        })->middleware(['password.confirm']);
+
+        Route::post('/settings', function () {
+            // ...
+        })->middleware(['password.confirm']);
+        // End: Password confirm
+
     });
 });
