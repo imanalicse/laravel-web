@@ -27,6 +27,7 @@ class LoginController extends Controller
 //        $remember_me = $request->get('remember_me');
 //        $remember_me = filter_var($remember_me, FILTER_VALIDATE_BOOLEAN);
         // if (Auth::attempt($credentials, $remember_me)) {
+        $credentials['active'] = 1;
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 

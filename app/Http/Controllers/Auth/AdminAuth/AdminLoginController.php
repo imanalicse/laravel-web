@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth\AdminAuth;
 
 use App\Enum\UserRole;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,7 +21,24 @@ class AdminLoginController extends Controller
             'password' => ['required'],
         ]);
 
-        // $credentials['role_id'] = UserRole::Admin->value;
+        $user = User::with('roles')->whereEmail($request->email)->first()->toArray();
+        if(empty($user) || empty($user['roles'])) {
+            return back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ])->onlyInput('email');
+        }
+
+        $roles = $user['roles'];
+        $role_names  = array_column($roles, 'name');
+        if (!in_array(UserRole::ADMIN, $role_names)) {
+            return back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ])->onlyInput('email');
+        }
+
+        // Auth::guard('admin')->login($user);
+
+        $credentials['active'] = 1;
         if (Auth::guard('admin')->attempt($credentials)) {
             $request->session()->regenerate();
             return redirect()->intended('admin/dashboard');
