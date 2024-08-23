@@ -30,9 +30,9 @@ Route::prefix('admin')->group(static function() {
     Route::middleware('auth:admin')->group(static function () {
         Route::get('/', [DashboardController::class, 'index']);
         Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-        Route::get('/users', [UsersController::class, 'index']);
-        Route::resource('products', ProductController::class);
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+        Route::get('/users', [UsersController::class, 'index'])->name('admin.users');
+        Route::resource('products', ProductController::class)->name('index','admin.products');
 
         // Start: Password confirm
         Route::get('/confirm-password', function () {
@@ -51,4 +51,8 @@ Route::prefix('admin')->group(static function() {
         // End: Password confirm
 
     });
+});
+
+Route::fallback(function () {
+    return view('page.404');
 });

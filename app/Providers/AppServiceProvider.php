@@ -6,6 +6,7 @@ use Illuminate\Database\Connection;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Database\Eloquent\Model;
@@ -27,8 +28,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+       //  Route::pattern('id', '[0-9]+'); // this is global pattern - global validation
+
         Vite::macro('image', fn (string $asset) => $this->asset("resources/images/{$asset}"));
-        Model::preventSilentlyDiscardingAttributes($this->app->isLocal()); // Mass Assignment Exceptions - local
+       //  Model::preventSilentlyDiscardingAttributes($this->app->isLocal()); // Mass Assignment Exceptions - local
 
         // Listening for Query Events
         DB::listen(function (QueryExecuted $query) {

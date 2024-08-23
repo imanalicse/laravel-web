@@ -8,11 +8,6 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
-    <?php
-    $action = app('request')->route()->getAction();
-    $controller = class_basename($action['controller']);
-    list($controller, $action) = explode('@', $controller);
-    ?>
     <div class="container-fluid">
         <div class="row">
         @include('admin.includes.sidebar-left')

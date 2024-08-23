@@ -7,7 +7,6 @@ php artisan optimize
 
 php artisan make:middleware EnsureTokenIsValid
 
-php artisan route:list
 php artisan make:controller PhotoController --resource
 php artisan make:controller PhotoController --model=Photo --resource --requests
 php artisan make:controller PhotoController --api

@@ -8,7 +8,7 @@
         </div>
         <div class="login-wrapper">
             <div class="login-form">
-                    <form class="form-horizontal" method="POST" action="{{ route('login.admin.submit') }}">
+                    <form class="form-horizontal" method="POST" action="{{ route('admin.login.submit') }}">
                             {{ csrf_field() }}
                         <div class="content-box">
                             <div class="card-title"><h1>Admin Log in</h1></div>
