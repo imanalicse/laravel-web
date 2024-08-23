@@ -13,15 +13,13 @@
     $controller = class_basename($action['controller']);
     list($controller, $action) = explode('@', $controller);
     ?>
-
-    @include('admin.includes.sidebar')
-
-    <div class="container">
+    <div class="container-fluid">
+        <div class="row">
+        @include('admin.includes.sidebar-left')
         @include('admin/includes/navbar')
-        <div class="main-container">
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             @include('admin.includes.messages')
             @yield('content')
-        </div>
-    </div>
+        </main>
 </body>
 </html>
