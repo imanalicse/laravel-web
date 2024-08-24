@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,7 +22,8 @@ Route::get('/registration', [RegisterController::class,'registration'])->name("r
 Route::post('/registration', [RegisterController::class, 'registrationSubmit'])->name('registration.submit');
 
 Route::get('/home', [PageController::class, 'home'])->name('home');
-Route::get('/profile', [PageController::class, 'profile'])->name('profile')->middleware('auth.basic');
+
+Route::singleton('profile', ProfileController::class)->middleware('auth.basic'); // Singleton Resource Controllers
 
 Route::prefix('admin')->group(static function() {
     Route::get('/login', [AdminLoginController::class, 'login'])->name("admin.login");
@@ -32,7 +34,7 @@ Route::prefix('admin')->group(static function() {
         Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/users', [UsersController::class, 'index'])->name('admin.users');
-        Route::resource('products', ProductController::class)->name('index','admin.products');
+        Route::resource('products', ProductController::class)->name('index','admin.products.index');
 
         // Start: Password confirm
         Route::get('/confirm-password', function () {
