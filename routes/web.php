@@ -24,8 +24,8 @@ Route::get('/home', [PageController::class, 'home'])->name('home');
 Route::get('/profile', [PageController::class, 'profile'])->name('profile')->middleware('auth.basic');
 
 Route::prefix('admin')->group(static function() {
-    Route::get('/login', [AdminLoginController::class, 'login'])->name("login.admin");
-    Route::post('/login', [AdminLoginController::class, 'authenticate'])->name('login.admin.submit');
+    Route::get('/login', [AdminLoginController::class, 'login'])->name("admin.login");
+    Route::post('/login', [AdminLoginController::class, 'authenticate'])->name('admin.login.submit');
 
     Route::middleware('auth:admin')->group(static function () {
         Route::get('/', [DashboardController::class, 'index']);
