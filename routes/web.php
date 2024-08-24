@@ -52,6 +52,9 @@ Route::prefix('admin')->group(static function() {
         })->middleware(['password.confirm']);
         // End: Password confirm
 
+        Route::get('/super', function () {
+            return 'super_admin';
+        })->middleware('role:Super Admin');
     });
 });
 

@@ -35,4 +35,15 @@ trait CommonTrait {
         $log_message = date('Y-m-d H:i:s') . ": " . $log_message."\n";
         error_log($log_message, 3, $file_path);
     }
+
+    public function hasRole(array $relational_roles, array $check_roles): bool {
+        $role_names  = array_column($relational_roles, 'name');
+        foreach ($check_roles as $key => $check_role) {
+            if (in_array($check_role, $role_names)) {
+                return true;            
+            }
+        }
+    
+        return false;
+    }
 }

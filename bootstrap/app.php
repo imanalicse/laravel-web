@@ -11,8 +11,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // $middleware->redirectGuestsTo('/login2');
-        //
+        $middleware->alias([
+            'role' => \App\Http\Middleware\CheckUserRoleMiddleware::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

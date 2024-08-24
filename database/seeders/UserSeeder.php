@@ -14,22 +14,29 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::factory()->create([
-            'name' => 'Iman Ali',
+
+        $super_admin_user = User::factory()->create([
+            'name' => 'Super Admin',
+            'email' => 'super.admin@yopmail.com',
+            'password' => '123456',
+            'active' => 1
+        ]);
+        $super_admin_user->roles()->attach(1);
+
+        $admin_user = User::factory()->create([
+            'name' => 'Admin',
             'email' => 'admin@yopmail.com',
             'password' => '123456',
             'active' => 1
         ]);
+        $admin_user->roles()->attach(2);
 
-        $user->roles()->attach(2);
-
-        $user2 = User::factory()->create([
-            'name' => 'Ishak Ahmed',
+        $customer_user = User::factory()->create([
+            'name' => 'Customer',
             'email' => 'customer@yopmail.com',
             'password' => '123456',
             'active' => 1
         ]);
-
-        $user2->roles()->attach(3);
+        $customer_user->roles()->attach(3);
     }
 }

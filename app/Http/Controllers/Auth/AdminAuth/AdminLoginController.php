@@ -29,8 +29,7 @@ class AdminLoginController extends Controller
         }
 
         $roles = $user['roles'];
-        $role_names  = array_column($roles, 'name');
-        if (!in_array(UserRole::ADMIN, $role_names)) {
+        if (! $this->hasRole($roles, [UserRole::SUPER_ADMIN, UserRole::ADMIN])) {
             return back()->withErrors([
                 'email' => 'The provided credentials do not match our records.',
             ])->onlyInput('email');
