@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Enum\UserRole;
 
 Route::get('/', function () {
     return view('welcome');
@@ -54,7 +55,7 @@ Route::prefix('admin')->group(static function() {
 
         Route::get('/super', function () {
             return 'super_admin';
-        })->middleware('role:Super Admin');
+        })->middleware('role:'. UserRole::SUPER_ADMIN);
     });
 });
 
