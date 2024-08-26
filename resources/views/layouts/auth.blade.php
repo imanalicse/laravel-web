@@ -14,8 +14,6 @@
 <body>
     <div class="container">
        @yield('content')
-        <!-- Scripts -->
-        <script src="{{ asset('js/app.js') }}"></script>
     </div>
 </body>
 </html>
