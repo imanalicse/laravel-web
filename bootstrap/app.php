@@ -16,12 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \App\Http\Middleware\CheckUserRoleMiddleware::class
         ]);
 
-        $middleware->redirectGuestsTo(function (Request $request) {
-            $route_prefix = trim($request->route()->getPrefix(), '/');
-            if ($route_prefix == 'admin') {
-                return route('admin.login');
-            }
-        });
+        $middleware->web(append: [
+           \App\Http\Middleware\LoginPageRedirection::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
