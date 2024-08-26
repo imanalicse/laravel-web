@@ -1,5 +1,7 @@
 php artisan make:controller UserController
 
+php artisan make:controller Admin/ProductController --resource
+
 php artisan make:controller ProvisionServer --invokable
 
 php artisan make:controller PhotoController --resource

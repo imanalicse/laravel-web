@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductAdminController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Auth\AdminAuth\AdminLoginController;
 use App\Http\Controllers\Auth\LoginController;
@@ -30,7 +30,7 @@ Route::prefix('admin')->group(static function() {
         Route::get('/', [DashboardController::class, 'index']);
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/users', [UsersController::class, 'index'])->name('admin.users');
-        Route::resource('products', ProductController::class)->name('index','admin.products.index');
+        Route::resource('products', ProductAdminController::class)->name('index','admin.products.index');
 
         // Start: Password confirm
         Route::get('/confirm-password', function () {

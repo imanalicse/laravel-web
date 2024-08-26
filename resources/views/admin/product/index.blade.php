@@ -1,15 +1,15 @@
 @extends('layouts.admin')
 
-@section('content')    
+@section('content')
     <div class="page-content">
             <div class="intro-section">
                 <h2>Total Products - <span>{{$total_product}}</span> &nbsp;&nbsp; <a href="{{route('products.create')}}" class="btn-success btn">Add New</a></h2>
                 <div class="aside-button">
                     <form class="form-inline" role="form">
                         <input type="text" name="search_key" class="form-control" id="search" placeholder="Search" value=" {{$search_key}} ">
-                        <button type="submit" class="btn-search"><i class="fa fa-search"></i></button>
+                        <button type="submit" class="btn-search" value="Search"></button>
                     </form>
-                    <a href="/admin/categories?search_reset=1" class="reload-btn btn-default btn"></a>
+                    <a href="/admin/products?search_reset=1" class="reload-btn btn-default btn"></a>
                 </div>
             </div>
             <table class="table-striped table table-responsive">

@@ -23,8 +23,8 @@
                 </a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="/" class="nav-link px-2 link-secondary">Home</a></li>
-                    <li><a href="#" class="nav-link px-2 link-dark">Products</a></li>
+                    <li><a href="/" class="nav-link px-2 link-dark">Home</a></li>
+                    <li><a href="/products" class="nav-link px-2 link-dark">Products</a></li>
                 </ul>
                 @if (Route::has('login'))
                     @auth
@@ -54,13 +54,13 @@
             </div>
         </div>
     </header>
+
     <div class="container-fluid position-relative overflow-hidden p-3 m-md-3 bg-light2">
         <div class="content">
             @yield('content')
-
-
         </div>
     </div>
+
     <footer class="container py-5">
         <div class="row">
             <div class="col-12 col-md">

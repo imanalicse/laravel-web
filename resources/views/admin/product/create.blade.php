@@ -1,19 +1,19 @@
 @extends('layouts.admin')
 
-@section('content') 
+@section('content')
     <div class="page-content">
         <h3>Add Product</h3>
         <div class="panel-body">
             <form class="form-horizontal" method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data">
             {{ csrf_field() }}
 
-            <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
+            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                 <label for="category_type" class="col-md-4 control-label">Title</label>
                 <div class="col-md-6">
-                    <input id="category_type" type="text" class="form-control" name="title" value="{{ old('title') }}" autofocus>
-                    @if ($errors->has('title'))
+                    <input id="category_type" type="text" class="form-control" name="name" value="{{ old('name') }}" autofocus>
+                    @if ($errors->has('name'))
                         <span class="help-block">
-                            <strong>{{ $errors->first('title') }}</strong>
+                            <strong>{{ $errors->first('name') }}</strong>
                         </span>
                     @endif
                 </div>
