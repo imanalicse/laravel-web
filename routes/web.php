@@ -12,17 +12,13 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Enum\UserRole;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [PageController::class, 'home'])->name('home');
 
 Route::get('/login', [LoginController::class, 'login'])->name("login");
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.submit');
-
 Route::get('/registration', [RegisterController::class,'registration'])->name("registration");
 Route::post('/registration', [RegisterController::class, 'registrationSubmit'])->name('registration.submit');
-
-Route::get('/home', [PageController::class, 'home'])->name('home');
+Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
 Route::singleton('profile', ProfileController::class)->middleware('auth.basic'); // Singleton Resource Controllers
 
@@ -32,7 +28,6 @@ Route::prefix('admin')->group(static function() {
 
     Route::middleware('auth:admin')->group(static function () {
         Route::get('/', [DashboardController::class, 'index']);
-        Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/users', [UsersController::class, 'index'])->name('admin.users');
         Route::resource('products', ProductController::class)->name('index','admin.products.index');
