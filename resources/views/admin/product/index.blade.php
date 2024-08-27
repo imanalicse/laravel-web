@@ -28,7 +28,6 @@
             </table>
         </div>
 
-        <div class="pagination-panel">
-            {{$products->onEachSide(5)->links()}}
-        </div>
+        {{$products->links()}}
+
 @endsection

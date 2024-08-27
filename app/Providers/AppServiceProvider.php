@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Database\Connection;
 use Illuminate\Database\Events\QueryExecuted;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
@@ -47,5 +48,6 @@ class AppServiceProvider extends ServiceProvider
             Log::info("Occurred_whenQueryingForLongerThan");
         });
 
+        Paginator::useBootstrapFive();
     }
 }
