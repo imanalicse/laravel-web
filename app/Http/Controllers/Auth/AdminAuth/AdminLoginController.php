@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Auth;
 class AdminLoginController extends Controller
 {
     public function login() {
+        if (Auth::guard('admin')->check()) {
+            return redirect()->intended('admin/dashboard');
+        }
         return view('auth.admin_login');
     }
 

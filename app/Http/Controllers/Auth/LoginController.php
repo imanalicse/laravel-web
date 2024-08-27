@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Hash;
 class LoginController extends Controller
 {
     public function login() {
+        if (Auth::guard('web')->check()) {
+            return redirect()->intended('/profile');
+        }
         return view('auth.login');
     }
 
