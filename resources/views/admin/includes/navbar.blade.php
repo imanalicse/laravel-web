@@ -17,4 +17,5 @@
             </form>
         </div>
     </div>
+    <a href="/" target="_blank">View site</a>
 </header>

@@ -13,11 +13,11 @@ class ProductAdminController extends Controller
      */
     public function index(Request $request)
     {
-        $products = Product::orderBy('id', 'desc')->paginate(10);
-        $total_product = Product::count();
         $search_key  = $request->query('search_key');
+        $products = Product::where('name', 'like', "%$search_key%")->orderBy('id', 'desc')->paginate(10)->withQueryString();
+        $products->appends(['sort' => 'votes', 'search_key' => $search_key]);
 
-        return view('admin.product.index', compact('products', 'total_product', 'search_key'));
+        return view('admin.product.index', compact('products', 'search_key'));
     }
 
     /**

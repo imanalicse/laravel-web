@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Admin\ProductAdminController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Auth\AdminAuth\AdminLoginController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Enum\UserRole;
 
@@ -19,6 +21,8 @@ Route::post('/login', [LoginController::class, 'authenticate'])->name('login.sub
 Route::get('/registration', [RegisterController::class,'registration'])->name("registration");
 Route::post('/registration', [RegisterController::class, 'registrationSubmit'])->name('registration.submit');
 Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
+
+Route::get('/products', [ProductController::class, 'index'])->name("products");
 
 Route::singleton('profile', ProfileController::class)->middleware('auth.basic'); // Singleton Resource Controllers
 

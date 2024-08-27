@@ -3,7 +3,7 @@
 @section('content')
     <div class="page-content">
             <div class="intro-section">
-                <h2>Total Products - <span>{{$total_product}}</span> &nbsp;&nbsp; <a href="{{route('products.create')}}" class="btn-success btn">Add New</a></h2>
+                <a href="{{route('products.create')}}" class="btn-success btn">Add New</a></h2>
                 <div class="aside-button">
                     <form class="form-inline" role="form">
                         <input type="text" name="search_key" class="form-control" id="search" placeholder="Search" value=" {{$search_key}} ">
@@ -29,6 +29,6 @@
         </div>
 
         <div class="pagination-panel">
-            {{$products->links()}}
+            {{$products->onEachSide(5)->links()}}
         </div>
 @endsection

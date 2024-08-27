@@ -1,6 +1,6 @@
 php artisan make:controller UserController
 
-php artisan make:controller Admin/ProductController --resource
+php artisan make:controller Admin/ProductAdminController --resource
 
 php artisan make:controller ProvisionServer --invokable
 
