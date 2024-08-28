@@ -8,6 +8,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel quickstart') }}</title>
+    <script>
+        window.base_url = "{{ url('/') }}";
+    </script>
     <script type="text/javascript" src="https://api.quickstream.support.qvalent.com/rest/v1/quickstream-api-1.0.min.js"></script>
      @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -40,13 +43,9 @@
                         </div>
                     @else
                         <div class="text-end">
-                            <button type="button" class="btn btn-outline-light2 me-2">
-                                <a href="{{ route('login') }}" class="">Log in</a>
-                            </button>
+                                <a href="{{ route('login') }}" class="btn btn-secondary me-2">Log in</a>
                             @if (Route::has('registration'))
-                                <button type="button" class="btn btn-warning">
-                                    <a href="{{ route('registration') }}">Sign-up</a>
-                                </button>
+                               <a href="{{ route('registration') }}" class="btn btn-secondary">Sign-up</a>
                             @endif
                         </div>
                     @endauth

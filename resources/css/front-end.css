@@ -19,7 +19,12 @@
     flex-wrap: wrap;
 }
 .flex-container > div {
-    margin: 10px;
-    padding: 20px;
-    border: 1px solid #718096;
+    margin: 5px;
+    padding: 10px;
+    width: 300px;
+}
+
+.product-grid .card .card-footer {
+    background-color: inherit;
+    border-top: none;
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Admin\ProductAdminController;
 use App\Http\Controllers\Admin\UsersController;
@@ -23,6 +24,8 @@ Route::post('/registration', [RegisterController::class, 'registrationSubmit'])-
 Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
 Route::get('/products', [ProductController::class, 'index'])->name("products");
+
+Route::post('/add-to-cart', [CartController::class, 'addToCart']);
 
 Route::singleton('profile', ProfileController::class)->middleware('auth.basic'); // Singleton Resource Controllers
 

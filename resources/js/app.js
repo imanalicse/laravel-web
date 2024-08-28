@@ -1,3 +1,4 @@
 import './bootstrap';
-import * as bootstrap from 'bootstrap';
+// import $ from 'jquery';
+import './front_end';
 import './dashboard';
