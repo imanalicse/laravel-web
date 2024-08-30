@@ -2,8 +2,8 @@
 
 @section('content')
 
-    <span class="cart_products_json d-none 2"><?php echo $cart_products_json; ?></span>
-    <div class="flex-container product-grid">
+    <span class="cart_products_json d-none"><?php echo $cart_products_json; ?></span>
+    <div class="container product-grid">
         @forelse($products as $product)
             <div class="card" id="product-<?php echo $product['id']; ?>">
                 <img src="https://mdbcdn.b-cdn.net/img/new/standard/nature/184.webp" class="card-img-top" alt="Fissure in Sandstone"/>

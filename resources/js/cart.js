@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
             action_type: 'decrease'
         };
         cartAjax(data, function (response) {
-            let quantity = response?.product_id?.quantity;
+            let quantity = response?.[product_id]?.quantity;
             if (!quantity) {
                 add_to_cart_box.find('.add-to-cart-btn').removeClass('d-none');
                 add_to_cart_box.find('.cart-added-box').addClass('d-none');

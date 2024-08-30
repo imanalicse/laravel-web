@@ -56,10 +56,8 @@
         </div>
     </header>
 
-    <div class="container-fluid position-relative overflow-hidden p-3 m-md-3 bg-light2">
-        <div class="content">
-            @yield('content')
-        </div>
+    <div class="container-fluid">
+         @yield('content')
     </div>
 
     <footer class="container py-5">
