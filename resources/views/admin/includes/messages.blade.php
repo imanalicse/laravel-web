@@ -1,4 +1,4 @@
-@if(count($errors) > 0)
+@if (count($errors) > 0)
     @foreach($errors->all() as $error)
         <div class="alert alert-danger">
             {{$error}}
@@ -6,13 +6,13 @@
     @endforeach
 @endif
 
-@if(session('success'))
+@if (session('success'))
     <div class="alert alert-success">
         {{session('success')}}
     </div>
 @endif
 
-@if(session('error'))
+@if (session('error'))
     <div class="alert alert-danger">
         {{session('error')}}
     </div>

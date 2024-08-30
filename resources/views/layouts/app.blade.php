@@ -47,6 +47,8 @@
                             @if (Route::has('registration'))
                                <a href="{{ route('registration') }}" class="btn btn-secondary">Sign-up</a>
                             @endif
+
+                            <a href="/admin/products" class="btn btn-secondary me-2">Admin products</a>
                         </div>
                     @endauth
                 @endif
