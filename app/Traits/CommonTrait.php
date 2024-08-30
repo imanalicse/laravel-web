@@ -3,6 +3,8 @@ namespace App\Traits;
 
 trait CommonTrait {
 
+    use SessionTrait;
+
     public function logDirectory() : string {
         return storage_path('logs');
     }
@@ -40,10 +42,10 @@ trait CommonTrait {
         $role_names  = array_column($relational_roles, 'name');
         foreach ($check_roles as $key => $check_role) {
             if (in_array($check_role, $role_names)) {
-                return true;            
+                return true;
             }
         }
-    
+
         return false;
     }
 }

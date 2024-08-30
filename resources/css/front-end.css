@@ -28,3 +28,12 @@
     background-color: inherit;
     border-top: none;
 }
+.add-to-cart-box {
+    margin: 0 10px;
+}
+.cart-btn-width {
+    width: 100%;
+}
+.add-to-cart-btn {
+    /*display: none;*/
+}
