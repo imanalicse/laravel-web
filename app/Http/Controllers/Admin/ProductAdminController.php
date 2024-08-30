@@ -69,9 +69,28 @@ class ProductAdminController extends Controller
 
     public function update(Request $request, Product $product): \Illuminate\Http\RedirectResponse
     {
+        $validated = $request->validate([
+            'name' => 'required'
+        ]);
         try {
-            $product->update($request->all());
-            return redirect()->route('admin.products.index')->with('success', 'Product has been edited');
+            if ($request->has('name')) {
+                $product->name = $request->name;
+            }
+            if ($request->has('price')) {
+                $product->price = $request->price;
+            }
+            if ($request->hasFile('image')) {
+                $extension = $request->image->extension();
+                if ($request->file('image')->isValid()) {
+                    $path = $request->image->store('public/uploads');
+                    // $path = $request->photo->storeAs('public/uploads', 'filename.jpg');
+                    $product->image = $path ?: '';
+                }
+            }
+            $saved = $product->save();
+            if ($saved) {
+                return redirect()->route('admin.products.index')->with('success', 'Product has been edited');
+            }
         }
         catch (\Exception $exception) {
             $message = $exception->getMessage();
