@@ -48,7 +48,7 @@
                                <a href="{{ route('registration') }}" class="btn btn-secondary">Sign-up</a>
                             @endif
 
-                            <a href="/admin/products" class="btn btn-secondary me-2">Admin products</a>
+                            <a href="/checkout" class="btn btn-secondary me-2">Checkout</a>
                         </div>
                     @endauth
                 @endif
@@ -57,6 +57,7 @@
     </header>
 
     <div class="container-fluid">
+         @include('shared.flash-messages')
          @yield('content')
     </div>
 

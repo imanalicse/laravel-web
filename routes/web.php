@@ -11,7 +11,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
-use App\Models\User;
+use App\Http\Controllers\CheckoutController;
 use Illuminate\Support\Facades\Route;
 use App\Enum\UserRole;
 
@@ -26,6 +26,7 @@ Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 Route::get('/products', [ProductController::class, 'index'])->name("products");
 
 Route::post('/add-to-cart', [CartController::class, 'addToCart']);
+Route::get('/checkout', [CheckoutController::class, 'index']);
 
 Route::singleton('profile', ProfileController::class)->middleware('auth.basic'); // Singleton Resource Controllers
 

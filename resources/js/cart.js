@@ -7,16 +7,18 @@ $.ajaxSetup({
 
 document.addEventListener("DOMContentLoaded", function () {
     let cart_products_json = $(".cart_products_json").text();
-    let cart_products = JSON.parse(cart_products_json);
-    console.log(cart_products);
-
-    Object.entries(cart_products).forEach(([product_id, product_object]) => {
-        console.log(product_id, product_object);
-        let product_selector = $('#product-' + product_id);
-        product_selector.find('.add-to-cart-btn').addClass('d-none');
-        product_selector.find('.cart-added-box').removeClass('d-none');
-        product_selector.find('.cart-added-box .quantity').text(product_object.quantity);
-    });
+    if (cart_products_json) {
+        let cart_products = JSON.parse(cart_products_json);
+        if (cart_products) {
+            Object.entries(cart_products).forEach(([product_id, product_object]) => {
+                console.log(product_id, product_object);
+                let product_selector = $('#product-' + product_id);
+                product_selector.find('.add-to-cart-btn').addClass('d-none');
+                product_selector.find('.cart-added-box').removeClass('d-none');
+                product_selector.find('.cart-added-box .quantity').text(product_object.quantity);
+            });
+        }
+    }
 
     $(".js-btn-add-cart").on("click", function (event) {
         event.preventDefault();

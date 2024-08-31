@@ -1,5 +1,5 @@
 import './bootstrap';
-// import $ from 'jquery';
+import * as bootstrap from 'bootstrap';
 import './front_end';
 import './cart';
 import './dashboard';

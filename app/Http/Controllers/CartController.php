@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    public function addToCart(Request $request) {
+    public function addToCart(Request $request): \Illuminate\Http\JsonResponse {
         $product_id = $request->product_id;
         $action_type = $request->action_type;
         $product = Product::find($product_id);
@@ -26,6 +26,7 @@ class CartController extends Controller
         else {
             $cart_products[$product_id] = [
                 'id' => $product->id,
+                'name'=> $product->name,
                 'price' => $product->price,
                 'quantity' => 1
             ];
