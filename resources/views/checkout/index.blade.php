@@ -8,18 +8,18 @@
                 <div class="accordion" id="accordionExample">
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <button class="accordion-button" id="address-tab" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                 Shipping & Billing Information
                             </button>
                         </h2>
                         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
 
-                                <form class="needs-validation" novalidate>
+                                <form class="" id="checkout-address-form">
                                     <div class="row g-3">
                                         <div class="col-sm-6">
                                             <label for="firstName" class="form-label">First name</label>
-                                            <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+                                            <input type="text" name="first_name" value="{{ $user['name'] }}" class="form-control" id="firstName" placeholder="" required>
                                             <div class="invalid-feedback">
                                                 Valid first name is required.
                                             </div>
@@ -27,7 +27,7 @@
 
                                         <div class="col-sm-6">
                                             <label for="lastName" class="form-label">Last name</label>
-                                            <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+                                            <input type="text" name="last_name" value="{{ $user['name'] }}" class="form-control" id="lastName" placeholder="" required>
                                             <div class="invalid-feedback">
                                                 Valid last name is required.
                                             </div>
@@ -35,53 +35,49 @@
 
                                         <div class="col-sm-6">
                                             <label for="email" class="form-label">Email <span class="text-muted"></span></label>
-                                            <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                                            <input type="email" name="email" value="{{ $user['email'] }}" class="form-control" id="email" placeholder="you@example.com" required>
                                             <div class="invalid-feedback">
                                                 Please enter a valid email address for shipping updates.
                                             </div>
                                         </div>
 
+                                        <div class="col-sm-6">
+                                            <label for="phone" class="form-label">Phone <span class="text-muted"></span></label>
+                                            <input type="tel" name="phone" class="form-control phone" id="phone">
+                                        </div>
+
                                         <div class="col-6">
                                             <label for="address" class="form-label">Address</label>
-                                            <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
-                                            <div class="invalid-feedback">
-                                                Please enter your shipping address.
-                                            </div>
+                                            <input type="text" name="address_line_1" class="form-control @error('address_line_1') is-invalid @enderror" id="address" required>
+                                            @error('address_line_1')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
 
                                         <div class="col-6">
                                             <label for="address2" class="form-label">Address 2 <span class="text-muted">(Optional)</span></label>
-                                            <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
+                                            <input type="text" name="address_line_2" class="form-control" id="address2" placeholder="Apartment or suite">
                                         </div>
 
                                         <div class="col-md-5">
                                             <label for="country" class="form-label">Country</label>
-                                            <select class="form-select" id="country" required>
+                                            <select name="country" class="form-select" id="country" required>
                                                 <option value="">Choose...</option>
                                                 <option>United States</option>
                                             </select>
-                                            <div class="invalid-feedback">
-                                                Please select a valid country.
-                                            </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <label for="state" class="form-label">State</label>
-                                            <select class="form-select" id="state" required>
+                                            <select name="state" class="form-select" id="state">
                                                 <option value="">Choose...</option>
                                                 <option>California</option>
                                             </select>
-                                            <div class="invalid-feedback">
-                                                Please provide a valid state.
-                                            </div>
                                         </div>
 
                                         <div class="col-md-3">
-                                            <label for="zip" class="form-label">Zip</label>
-                                            <input type="text" class="form-control" id="zip" placeholder="" required>
-                                            <div class="invalid-feedback">
-                                                Zip code required.
-                                            </div>
+                                            <label for="postcode" class="form-label">Postcode</label>
+                                            <input type="text" name="postcode" class="form-control" id="postcode">
                                         </div>
                                     </div>
 
@@ -96,15 +92,14 @@
                                         <input type="checkbox" class="form-check-input" id="save-info">
                                         <label class="form-check-label" for="save-info">Save this information for next time</label>
                                     </div>
-                                    <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
-
+                                    <button class="w-100 btn btn-primary btn-lg" type="submit">Continue</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingTwo">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <button class="accordion-button collapsed" id="payment-tab" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                 Payment
                             </button>
                         </h2>

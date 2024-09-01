@@ -27,6 +27,7 @@ Route::get('/products', [ProductController::class, 'index'])->name("products");
 
 Route::post('/add-to-cart', [CartController::class, 'addToCart']);
 Route::get('/checkout', [CheckoutController::class, 'index']);
+Route::post('/checkout', [CheckoutController::class,'checkout']);
 
 Route::singleton('profile', ProfileController::class)->middleware('auth.basic'); // Singleton Resource Controllers
 
