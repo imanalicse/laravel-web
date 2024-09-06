@@ -11,21 +11,13 @@ class Input extends Component
     /**
      * Create a new component instance.
      */
-    public string $name;
-    public string $title;
-    public $value;
-    public string $type;
     public int $column;
-    public bool $required;
+    public string $title;
 
-    public function __construct($name, $title, $value = null, $type = 'text', $column = 1, $required =  false)
+    public function __construct($title, $column = 1)
     {
-        $this->name = $name;
         $this->title = $title;
-        $this->value = $value;
-        $this->type = $type;
         $this->column = $column;
-        $this->required = boolval($required);
     }
 
     /**
