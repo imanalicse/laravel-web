@@ -62,7 +62,3 @@ Route::prefix('admin')->group(static function() {
         })->middleware('role:'. UserRole::SUPER_ADMIN);
     });
 });
-
-Route::fallback(function () {
-    return view('page.404');
-});
