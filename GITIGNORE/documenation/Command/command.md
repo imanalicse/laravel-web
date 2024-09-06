@@ -10,10 +10,3 @@ php artisan make:middleware EnsureTokenIsValid
 php artisan make:controller PhotoController --resource
 php artisan make:controller PhotoController --model=Photo --resource --requests
 php artisan make:controller PhotoController --api
-
-
-# classed back component
-php artisan make:component Alert
-php artisan make:component Forms/Input
-## anonymous component 
-php artisan make:component forms.input --view

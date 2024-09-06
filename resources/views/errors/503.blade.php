@@ -1,9 +1,5 @@
-@extends('layouts.auth')
+@extends('errors::minimal')
 
-@section('content')
-
-    <div class="">
-            Site is under maintenance
-    </div>
-
-@endsection
+@section('title', __('Service Unavailable'))
+@section('code', '503')
+@section('message', __('Service Unavailable'))
