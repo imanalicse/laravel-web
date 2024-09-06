@@ -17,21 +17,9 @@
 
                                 <form class="" id="checkout-address-form">
                                     <div class="row g-3">
-                                        <div class="col-sm-6">
-                                            <label for="firstName" class="form-label">First name</label>
-                                            <input type="text" name="first_name" value="{{ $user['name'] }}" class="form-control" id="firstName" placeholder="" required>
-                                            <div class="invalid-feedback">
-                                                Valid first name is required.
-                                            </div>
-                                        </div>
 
-                                        <div class="col-sm-6">
-                                            <label for="lastName" class="form-label">Last name</label>
-                                            <input type="text" name="last_name" value="{{ $user['name'] }}" class="form-control" id="lastName" placeholder="" required>
-                                            <div class="invalid-feedback">
-                                                Valid last name is required.
-                                            </div>
-                                        </div>
+                                        <x-forms.input name="first_name" title="First Name" :value="$user['name']" column="2" required="1"/>
+                                        <x-forms.input name="last_name" title="Last Name" :value="$user['name']" column="2" required="1"/>
 
                                         <div class="col-sm-6">
                                             <label for="email" class="form-label">Email <span class="text-muted"></span></label>
