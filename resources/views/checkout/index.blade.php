@@ -18,7 +18,7 @@
                                 <form class="" id="checkout-address-form">
                                     <div class="row g-3">
 
-                                        <x-forms.input name="first_name" title="First Name" value="{{$user['name']}}" column="2" wrapper_class="abc" required/>
+                                        <x-forms.input name="first_name" title="First Name" value="{{$user['name']}}" column="2" wrapper:class="abc" wrapper:id="bbb" required/>
                                         <x-forms.input name="last_name" title="Last Name" value="{{$user['name']}}" column="2"/>
 
                                         <div class="col-sm-6">
