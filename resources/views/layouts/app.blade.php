@@ -11,8 +11,9 @@
     <script>
         window.base_url = "{{ url('/') }}";
     </script>
-    <script type="text/javascript" src="https://api.quickstream.support.qvalent.com/rest/v1/quickstream-api-1.0.min.js"></script>
+     @stack('scripts_top')
      @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @stack('scripts')
 </head>
 <body>
 

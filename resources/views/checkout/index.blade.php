@@ -184,4 +184,13 @@
             </div>
         </div>
     </div>
+
+    @push('scripts_top')
+        <script src="https://api.quickstream.support.qvalent.com/rest/v1/quickstream-api-1.0.min.js"></script>
+    @endpush
+
+    @prepend('scripts')
+
+    @endprepend
+
 @endsection
