@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
@@ -49,5 +50,9 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Paginator::useBootstrapFive();
+
+        Blade::directive('datetime', function (string $expression) {
+            return "<?php echo ($expression)->format('Y-m-d H:i:s'); ?>";
+        });
     }
 }
