@@ -28,11 +28,10 @@ class LoginController extends Controller
             'password' => ['required'],
         ]);
 
-//        $remember_me = $request->get('remember_me');
-//        $remember_me = filter_var($remember_me, FILTER_VALIDATE_BOOLEAN);
-        // if (Auth::attempt($credentials, $remember_me)) {
+        $remember_me = $request->get('remember_me');
+        $remember_me = filter_var($remember_me, FILTER_VALIDATE_BOOLEAN);
         $credentials['active'] = 1;
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $remember_me)) {
             $request->session()->regenerate();
 
             return redirect()->intended('/profile');
