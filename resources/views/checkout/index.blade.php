@@ -55,7 +55,7 @@
 
                                         <div class="col-md-5">
                                             <label for="country" class="form-label">Country</label>
-                                            <select name="country" class="form-select" id="country" required>
+                                            <select name="country" class="form-select" id="country">
                                                 <option value="">Choose...</option>
                                                 <option>United States</option>
                                             </select>

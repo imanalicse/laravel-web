@@ -38,13 +38,16 @@ $(document).ready(function($) {
                 url: '/checkout',
                 data: formData,
                 error: function (xhr, status, error) {
-                    console.log(xhr);
-                    console.log(status);
-                    console.log(error);
-                    var responseTextJson = JSON.parse(xhr.responseText)
-                    if (responseTextJson) {
-                        $(".checkout-msg").html('<p class="error" style="color: red">' + responseTextJson.message + '</p>');
+                    if (xhr.status === 422) {
+                        let errors = xhr.responseJSON.errors;
+                        $('.error').remove();
+                        $.each(errors, function(field, messages) {
+                            let inputField = $('[name=' + field + ']');
+                            inputField.addClass('is-invalid');
+                            inputField.after('<div class="error">' + messages[0] + '</div>');
+                        });
                     }
+
                 },
                 success: function (response) {
                     console.log('response', response);
