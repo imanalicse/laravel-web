@@ -41,16 +41,16 @@
                                         </div>
 
                                         <div class="col-6">
-                                            <label for="address" class="form-label">Address</label>
-                                            <input type="text" name="address_line_1" class="form-control @error('address_line_1') is-invalid @enderror" id="address" required>
+                                            <label for="address_line_1" class="form-label">Address line 1</label>
+                                            <input type="text" name="address_line_1" class="form-control @error('address_line_1') is-invalid @enderror" id="address_line_1">
                                             @error('address_line_1')
-                                            <div class="alert alert-danger">{{ $message }}</div>
+                                                <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
 
                                         <div class="col-6">
-                                            <label for="address2" class="form-label">Address 2 <span class="text-muted">(Optional)</span></label>
-                                            <input type="text" name="address_line_2" class="form-control" id="address2" placeholder="Apartment or suite">
+                                            <label for="address_line_2" class="form-label">Address line 2 <span class="text-muted">(Optional)</span></label>
+                                            <input type="text" name="address_line_2" class="form-control" id="address_line_2" placeholder="Apartment or suite">
                                         </div>
 
                                         <div class="col-md-5">

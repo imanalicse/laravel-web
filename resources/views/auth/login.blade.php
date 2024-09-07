@@ -6,23 +6,19 @@
         <h1 class="h3 mb-3 fw-normal">Sign in</h1>
         <form class="form-horizontal" method="POST" action="{{ route('login.submit') }}">
             {{ csrf_field() }}
-            <div class="form-group {{ $errors->has('email') ? ' has-error' : '' }}">
+            <div class="form-group">
                 <label for="email">Email</label>
-                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="" autocomplete="off" required autofocus>
-                @if ($errors->has('email'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('email') }}</strong>
-                    </span>
-                @endif
+                <input id="email" type="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" autocomplete="off" autofocus>
+                @error('email')
+                    <div class="error">{{ $message }}</div>
+                @enderror
             </div>
-            <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
+            <div class="form-group">
                 <label for="password">Password</label>
-                <input id="password" type="password" class="form-control" name="password" placeholder="" autocomplete="off" required>
-                @if ($errors->has('password'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('password') }}</strong>
-                    </span>
-                @endif
+                <input id="password" type="password" name="password" class="form-control @error('password') is-invalid @enderror" autocomplete="off">
+                @error('password')
+                    <div class="error">{{ $message }}</div>
+                @enderror
             </div>
             <div class="form-group">
               <input type="checkbox" name="remember_me" class="custom-control-input" id="remember_me">
