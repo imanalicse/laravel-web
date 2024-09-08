@@ -4,6 +4,7 @@ namespace App\Traits;
 trait CommonTrait {
 
     use SessionTrait;
+    use PayPalTrait;
 
     public function logDirectory() : string {
         return storage_path('logs');
@@ -47,5 +48,9 @@ trait CommonTrait {
         }
 
         return false;
+    }
+
+    public function decimalPrice($amount, $decimal = 2) : string {
+        return number_format($amount, $decimal, '.', '');
     }
 }

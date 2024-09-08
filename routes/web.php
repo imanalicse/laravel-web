@@ -62,3 +62,7 @@ Route::prefix('admin')->group(static function() {
         })->middleware('role:'. UserRole::SUPER_ADMIN);
     });
 });
+
+// Payment
+Route::post('/paypal/createPayPalOrder', [\App\Http\Controllers\Payment\PayPalController::class, 'createPayPalOrder']);
+Route::post('/paypal/orders/{paypal_order_id}/capture', [\App\Http\Controllers\Payment\PayPalController::class, 'capturePayPalPayment']);
