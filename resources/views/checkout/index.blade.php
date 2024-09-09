@@ -27,25 +27,6 @@
                     <script src="https://js.stripe.com/v3/"></script>
                 @endpush
 
-                @php
-                $stripe_public_key = env('STRIPE_PUBLIC_KEY');
-                @endphp
-                <input type="hidden" id="stripe_public_key" value="<?php echo $stripe_public_key; ?>">
-                <div id="stripe-ui-container" class="stripe-card-wrap">
-                    <form id="payment-form">
-                        <label for="card-element">Card</label>
-                        <div id="card-element">
-                            <!-- Elements will create input elements here -->
-                        </div>
-
-                        <!-- We'll put the error messages in this element -->
-                        <div id="card-errors" role="alert"></div>
-
-                        <button id="submit">Pay</button>
-                    </form>
-                </div>
-                {{--Stripe block end--}}
-
                 <div class="accordion" id="accordionExample">
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
@@ -149,44 +130,29 @@
                                     </div>
                                 </div>
 
-                                <div class="row gy-3">
-                                    <div class="col-md-6">
-                                        <label for="cc-name" class="form-label">Name on card</label>
-                                        <input type="text" class="form-control" id="cc-name" placeholder="" required>
-                                        <small class="text-muted">Full name as displayed on card</small>
-                                        <div class="invalid-feedback">
-                                            Name on card is required
+                                {{--Stripe block--}}
+                                @php
+                                    $stripe_public_key = env('STRIPE_PUBLIC_KEY');
+                                @endphp
+                                <input type="hidden" id="stripe_public_key" value="<?php echo $stripe_public_key; ?>">
+                                <div id="stripe-ui-container" class="stripe-card-wrap">
+                                    <form id="payment-form">
+                                        <label for="card-element">Stripe Card</label>
+                                        <div id="card-element">
+                                            <!-- Elements will create input elements here -->
                                         </div>
-                                    </div>
 
-                                    <div class="col-md-6">
-                                        <label for="cc-number" class="form-label">Credit card number</label>
-                                        <input type="text" class="form-control" id="cc-number" placeholder="" required>
-                                        <div class="invalid-feedback">
-                                            Credit card number is required
-                                        </div>
-                                    </div>
+                                        <!-- We'll put the error messages in this element -->
+                                        <div id="card-errors" role="alert"></div>
 
-                                    <div class="col-md-3">
-                                        <label for="cc-expiration" class="form-label">Expiration</label>
-                                        <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
-                                        <div class="invalid-feedback">
-                                            Expiration date required
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label for="cc-cvv" class="form-label">CVV</label>
-                                        <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
-                                        <div class="invalid-feedback">
-                                            Security code required
-                                        </div>
-                                    </div>
+                                        <button id="submit">Pay</button>
+                                    </form>
                                 </div>
+                                {{--Stripe block end--}}
 
                                 <hr class="my-4">
 
-                                <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+                                <button class="w-100 btn btn-primary btn-lg" type="submit">Pay and Place order</button>
 
                             </div>
                         </div>

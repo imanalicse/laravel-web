@@ -14,12 +14,13 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->uuid()->default(DB::raw('UUID()'));
+            $table->uuid()->default(DB::raw('UUID()'))->unique();
             $table->string('name')->nullable(false);
             $table->string('slug')->nullable(false)->unique();
             $table->decimal('price', 20, 5)->default(0);
             $table->text('description')->default('');
             $table->string('image')->default('');
+            $table->engine('InnoDB');
             $table->timestamps();
         });
     }
