@@ -23,6 +23,29 @@
                 <div id="paypal-button-container"></div>
                 {{--Paypal block end--}}
 
+                @push('scripts_top')
+                    <script src="https://js.stripe.com/v3/"></script>
+                @endpush
+
+                @php
+                $stripe_public_key = env('STRIPE_PUBLIC_KEY');
+                @endphp
+                <input type="hidden" id="stripe_public_key" value="<?php echo $stripe_public_key; ?>">
+                <div id="stripe-ui-container" class="stripe-card-wrap">
+                    <form id="payment-form">
+                        <label for="card-element">Card</label>
+                        <div id="card-element">
+                            <!-- Elements will create input elements here -->
+                        </div>
+
+                        <!-- We'll put the error messages in this element -->
+                        <div id="card-errors" role="alert"></div>
+
+                        <button id="submit">Pay</button>
+                    </form>
+                </div>
+                {{--Stripe block end--}}
+
                 <div class="accordion" id="accordionExample">
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
