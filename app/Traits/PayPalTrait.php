@@ -75,14 +75,12 @@ trait PayPalTrait {
     }
 
     public function payPalRequestData() {
+        $cart = $this->cartGet();
         try {
 //            $order_code_id = $this->getComponent('CommonFunction')->saveAndGetNewPaymentOrderCode(PaymentMethod::PAY_PAL);
 //            if (empty($order_code_id)) {
 //                die();
 //            }
-
-            $cart = $this->cartGet();
-            // $currency = $this->getCurrencyFromCart($cart);
             $currency = $cart['amount']['currency'];
             $amount = $cart['amount']['order_total'];
             $service_charge_amount = 0;
@@ -190,7 +188,7 @@ trait PayPalTrait {
             return $request_data;
         }
         catch (\Exception $exception) {
-            $this->customLog("Error in payPalRequestData :". $exception->getMessage() . " ->cart: ". $this->json_encode($cart), 'pay_pal_error', PaymentMethod::PAY_PAL);
+            $this->customLog("Error in payPalRequestData :". $exception->getMessage() . " ->cart: ". json_encode($cart), 'pay_pal_error', 'pay_pal');
         }
     }
 
