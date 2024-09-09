@@ -14,20 +14,20 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->uuid()->default(DB::raw('UUID()'))->unique();
-            $table->string('order_status')->nullable(false);
             $table->decimal('order_total', 20, 5)->default(0);
             $table->decimal('service_amount', 20, 5)->default(0);
             $table->decimal('shipping_amount', 20, 5)->default(0);
             $table->decimal('tax_amount', 20, 5)->default(0);
             $table->decimal('coupon_amount', 20, 5)->default(0);
-            $table->string('tax_title');
-            $table->string('shipping_method');
-            $table->string('coupon_code');
+            $table->string('tax_title')->nullable();
+            $table->string('shipping_method')->nullable();
+            $table->string('coupon_code')->nullable();
             $table->dateTime('order_date_time')->nullable(false);
             $table->string('payment_method');
             $table->string('payment_reference_code');
             $table->string('currency');
-            $table->string('order_pdf');
+            $table->string('order_pdf')->nullable();
+            $table->string('order_status')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->tinyInteger('is_email_sent')->default(0);
             $table->engine('InnoDB');

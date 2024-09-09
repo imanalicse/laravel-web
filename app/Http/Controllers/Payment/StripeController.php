@@ -19,15 +19,27 @@ class StripeController extends Controller
             'stripe_version' => '2020-08-27',
         ]);
 
+        $cart = $this->dbValidatedCart();
+        $payable_amount = $cart['amount']['order_total'];
+        $currency = $cart['amount']['currency'];
+
         $response = ['status' => 'error', 'message' => ''];
-        $payable_amount = 5;
         try {
-            $paymentIntent = $stripe->paymentIntents->create([
+            $payment_reference_code = uniqid();
+            $payment_intent_data = [
                 'payment_method_types' => ['card'],
                 'amount' => $payable_amount * 100,
-                'currency' => 'usd',
-            ]);
-            $paymentIntent_arr = json_decode(json_encode($paymentIntent, JSON_UNESCAPED_SLASHES), true);
+                'currency' => $currency,
+                'metadata' => [
+                    'reference_code' => $payment_reference_code,
+                    'customer_id' => 'cus-123',
+                ]
+            ];
+            $this->customLog('payment_intent_request_data: '. json_encode($payment_intent_data), 'stripe', 'stripe');
+            $paymentIntent = $stripe->paymentIntents->create($payment_intent_data);
+            $paymentIntent_json = json_encode($paymentIntent, JSON_UNESCAPED_SLASHES);
+            $paymentIntent_arr = json_decode($paymentIntent_json, true);
+            $this->customLog('payment_intent_response_data_: '. $paymentIntent_json, 'stripe', 'stripe');
             $response['intent_data'] = $paymentIntent_arr;
             $response['status'] = 'success';
         }

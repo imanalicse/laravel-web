@@ -72,9 +72,32 @@ async function makePayment(payment_intent, cardElement) {
         stripePaymentForm.querySelector('button').disabled = false;
         return;
     }
+
+    console.log('confirmPaymentIntent', paymentIntent);
+
     if (paymentIntent.id && paymentIntent.status === "succeeded") {
         console.log('Write code here to create order')
+        $.ajax({
+            url: '/stripe/order',
+            method: 'POST',
+            data: {
+                payment_intent: paymentIntent
+            },
+            success: function (response) {
+                try {
+                    let resp =JSON.parse(response);
+                    console.log('order response: ', resp);
+                    if (resp.status === 'success') {
+
+                    }
+                }
+                catch (e) {
+                    console.error('error', e)
+                }
+            },
+            error: function (xhr, status) {
+
+            },
+        });
     }
-    console.log('confirmPaymentIntent', paymentIntent);
-    alert(`Payment (${paymentIntent.id}): ${paymentIntent.status}`);
 }

@@ -67,3 +67,4 @@ Route::prefix('admin')->group(static function() {
 Route::post('/paypal/createPayPalOrder', [\App\Http\Controllers\Payment\PayPalController::class, 'createPayPalOrder']);
 Route::post('/paypal/orders/{paypal_order_id}/capture', [\App\Http\Controllers\Payment\PayPalController::class, 'capturePayPalPayment']);
 Route::get('/stripe/create-payment-intent', [\App\Http\Controllers\Payment\StripeController::class, 'createPaymentIntent']);
+Route::post('/stripe/order', [\App\Http\Controllers\OrderController::class, 'createStripeOrder']);
