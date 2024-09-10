@@ -25,11 +25,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     cardElement.mount('#card-element');
 
+    $("#stripe-pay-now-btn").prop('disabled', false).removeClass('disabled');
+    $("#stripe-pay-now-additional-btn").prop('disabled', false).removeClass('disabled');
 
     const stripePaymentForm = document.querySelector('#payment-form');
     stripePaymentForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        stripePaymentForm.querySelector('button').disabled = true;
+        // stripePaymentForm.querySelector('button').disabled = true;
 
         $.ajax({
             url: '/stripe/create-payment-intent',
@@ -69,7 +71,8 @@ async function makePayment(payment_intent, cardElement) {
         console.log('error_message', error_message);
         console.log('error', error);
         alert(`error_message: ${error_message}`)
-        stripePaymentForm.querySelector('button').disabled = false;
+        // save3dStripeErrorResponse({error: error})
+        // stripePaymentForm.querySelector('button').disabled = false;
         return;
     }
 
@@ -84,20 +87,36 @@ async function makePayment(payment_intent, cardElement) {
                 payment_intent: paymentIntent
             },
             success: function (response) {
-                try {
-                    let resp =JSON.parse(response);
-                    console.log('order response: ', resp);
-                    if (resp.status === 'success') {
+                    console.log('order response: ', response);
+                    if (response.status === 'success') {
 
                     }
-                }
-                catch (e) {
-                    console.error('error', e)
-                }
+                    alert(response.message);
+                    if (response.redirect_url) {
+                        setTimeout(function () {
+                            window.location.replace(response.redirect_url);
+                        }, 4000);
+                    }
             },
             error: function (xhr, status) {
 
             },
         });
     }
+}
+
+function save3dStripeErrorResponse(data) {
+    $.ajax({
+        url: '/payment/stripe/save-3d-stripe-error-response',
+        method: "POST",
+        data: data,
+        success: function (res) {
+            res = JSON.parse(res);
+
+            console.log({res})
+        },
+        complete: function () {
+
+        }
+    });
 }

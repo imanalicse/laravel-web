@@ -7,26 +7,12 @@
 @endsection
 
 @section('content')
+    @php
+        use App\Enum\PaymentMethod;
+    @endphp
     <div class="container">
         <div class="row g-5">
             <div class="col-md-7 col-lg-8">
-
-                {{--Paypal block--}}
-                <div class="js_payment_message"></div>
-                <?php
-                $currency = 'AUD';
-                $paypal_client_id = env('PAYPAL_CLIENT_ID_TEST');
-                ?>
-                @push('scripts_top')
-                    <script src="https://www.paypal.com/sdk/js?client-id=<?php echo $paypal_client_id; ?>&currency=<?php echo $currency; ?>&disable-funding=card"></script>
-                @endpush
-                <div id="paypal-button-container"></div>
-                {{--Paypal block end--}}
-
-                @push('scripts_top')
-                    <script src="https://js.stripe.com/v3/"></script>
-                @endpush
-
                 <div class="accordion" id="accordionExample">
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
@@ -130,30 +116,72 @@
                                     </div>
                                 </div>
 
-                                {{--Stripe block--}}
-                                @php
-                                    $stripe_public_key = env('STRIPE_PUBLIC_KEY');
-                                @endphp
-                                <input type="hidden" id="stripe_public_key" value="<?php echo $stripe_public_key; ?>">
-                                <div id="stripe-ui-container" class="stripe-card-wrap">
-                                    <form id="payment-form">
-                                        <label for="card-element">Stripe Card</label>
-                                        <div id="card-element">
-                                            <!-- Elements will create input elements here -->
+                                <div class="payment-method-box">
+                                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                        <div class="input radio my-2">
+                                            <span class="custom-radio">
+                                                <input type="radio" id="<?php echo PaymentMethod::STRIPE; ?>" name="payment_method" value="<?php echo PaymentMethod::STRIPE; ?>">
+                                                <label for="<?php echo PaymentMethod::STRIPE; ?>"><?php echo PaymentMethod::STRIPE; ?></label>
+                                            </span>
                                         </div>
+                                        <div class="d-flex justify-content-end my-2">
+                                            <div class="payment-method-img">
+                                                <img src="{{Vite::image('visa-card-group.png')}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="my-2">
 
-                                        <!-- We'll put the error messages in this element -->
-                                        <div id="card-errors" role="alert"></div>
+                                        {{--Stripe block--}}
+                                        <div class="js_stripe_payment_form_wrapper d-none">
+                                            @push('scripts_top')
+                                                <script src="https://js.stripe.com/v3/"></script>
+                                            @endpush
+                                            @php
+                                                $stripe_public_key = env('STRIPE_PUBLIC_KEY');
+                                            @endphp
+                                            <input type="hidden" id="stripe_public_key" value="<?php echo $stripe_public_key; ?>">
+                                            <div id="stripe-ui-container" class="stripe-card-wrap">
+                                                <form id="payment-form">
+                                                    {{--                                                <label for="card-element">Stripe Card</label>--}}
+                                                    <div id="card-element">
+                                                        <!-- Elements will create input elements here -->
+                                                    </div>
 
-                                        <button id="submit">Pay</button>
-                                    </form>
+                                                    <!-- We'll put the error messages in this element -->
+                                                    <div id="card-errors" role="alert"></div>
+
+                                                    <button type="submit" class="d-none" id="stripe-pay-now-btn">Pay</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        {{--Stripe block end--}}
+                                    </div>
                                 </div>
-                                {{--Stripe block end--}}
+
+                                <div class="payment-method-box">
+                                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                        <div class="input radio my-2">
+                                            <span class="custom-radio">
+                                                <input type="radio" id="<?php echo PaymentMethod::PAY_PAL; ?>" name="payment_method" value="<?php echo PaymentMethod::PAY_PAL; ?>">
+                                                <label for="<?php echo PaymentMethod::PAY_PAL; ?>"><?php echo PaymentMethod::PAY_PAL; ?></label>
+                                            </span>
+                                        </div>
+                                        <div class="d-flex justify-content-end my-2">
+                                            <div class="payment-method-img">
+                                                <img src="{{Vite::image('paypal-logo.png')}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <hr class="my-4">
 
-                                <button class="w-100 btn btn-primary btn-lg" type="submit">Pay and Place order</button>
-
+                                <div class="button-container">
+                                    <button class="w-100 btn btn-primary btn-lg d-none disabled js_pay_now_btn_common" id="stripe-pay-now-additional-btn">Confirm & Pay</button>
+                                    <button class="w-100 btn btn-primary btn-lg d-none js_pay_now_btn_common" id="js_offline_pay_btn">Confirm & Pay</button>
+                                    @include('checkout.paypal_button');
+                                </div>
                             </div>
                         </div>
                     </div>

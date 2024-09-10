@@ -5,3 +5,4 @@ import './cart';
 import './dashboard';
 import './paypal_payment';
 import './payment/stripe_payment_3';
+import './payment/payment'
