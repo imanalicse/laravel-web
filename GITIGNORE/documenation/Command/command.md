@@ -5,8 +5,6 @@ php artisan serve --port=8080
 
 php artisan help migrate
 
-php artisan make:command MakeRepository
-
 php artisan optimize
 
 php artisan make:middleware EnsureTokenIsValid
