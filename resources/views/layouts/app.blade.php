@@ -12,7 +12,7 @@
         window.base_url = "{{ url('/') }}";
     </script>
      @stack('scripts_top')
-     @vite(['resources/css/app.css', 'resources/js/app.js'])
+     @vite(['resources/css/app.css', 'resources/js/frontend.js'])
     @stack('scripts')
 </head>
 <body>
