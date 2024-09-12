@@ -19,8 +19,8 @@ class ProductService
         return $this->productRepository->all();
     }
 
-    public function getPaginatedProducts($perPage)
+    public function getPaginatedProducts()
     {
-        return $this->productRepository->paginate($perPage);
+        return $this->productRepository->paginate();
     }
 }

@@ -6,7 +6,7 @@ interface ProductRepositoryInterface
 {
     public function all();
 
-    public function paginate($perPage);
+    public function paginate();
 
     public function find($id);
 

@@ -11,9 +11,9 @@ class ProductRepository implements ProductRepositoryInterface
         return Product::all();
     }
 
-    public function paginate($perPage): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function paginate(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
-      return Product::orderByDesc('id')->paginate($perPage);
+      return Product::orderByDesc('id')->paginate();
     }
 
     public function find($id)
