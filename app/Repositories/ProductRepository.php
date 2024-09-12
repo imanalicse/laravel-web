@@ -6,14 +6,14 @@ use App\Models\Product;
 
 class ProductRepository implements ProductRepositoryInterface
 {
-    public function all()
+    public function all(): \Illuminate\Database\Eloquent\Collection
     {
         return Product::all();
     }
 
-    public function paginate($perPage)
+    public function paginate($perPage): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
-        Product::paginate($perPage);
+      return Product::orderByDesc('id')->paginate($perPage);
     }
 
     public function find($id)

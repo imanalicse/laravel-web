@@ -18,8 +18,9 @@ class ProductController extends Controller
 
     public function index()
     {
-        // $products = $this->productService->getAllProducts();
-        $products = Product::orderBy('id', 'desc')->paginate(10);
+        $products = $this->productService->getPaginatedProducts(10);
+// dd($products);
+        //$products = Product::orderBy('id', 'desc')->paginate(10);
         $cart_products = $this->cartGet('products');
         $cart_products_json = json_encode($cart_products);
 
