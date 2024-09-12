@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\OrderRepositoryInterface;
+use App\Services\OrderService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    private OrderRepositoryInterface $orderRepository;
+    private OrderService $orderService;
 
-    public function __construct(OrderRepositoryInterface $orderRepository)
+    public function __construct(OrderService $orderService)
     {
-        $this->orderRepository = $orderRepository;
+        $this->orderService = $orderService;
     }
 
     public function index(): JsonResponse {
         return response()->json([
-           'data' => $this->orderRepository->all()
+           'data' => $this->orderService->getAllOrders()
         ]);
     }
 }
