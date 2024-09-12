@@ -2,13 +2,13 @@
 
 @section('content')
 
-    <span class="cart_products_json d-none"><?php echo $cart_products_json; ?></span>
+    <span class="cart_products_json d-none">{{$cart_products_json}}</span>
     <div class="container">
         <div class="product-grid">
             @if(!empty($products))
                 @foreach($products as $product)
-                    <div class="card" id="product-<?php echo $product['id']; ?>">
-                        <img src="https://mdbcdn.b-cdn.net/img/new/standard/nature/184.webp" class="card-img-top" alt="Fissure in Sandstone"/>
+                    <div class="card" id="product-{{$product['id']}}">
+                        <img src="https://cdn.shopify.com/s/files/1/2303/2711/files/2_e822dae0-14df-4cb8-b145-ea4dc0966b34.jpg?v=1617059123" class="card-img-top" alt="Fissure in Sandstone"/>
                         <div class="card-body p-0">
                             <h5 class="card-title">{{ $product->name }}</h5>
                             <p class="card-text">${{ $product->price }}</p>
