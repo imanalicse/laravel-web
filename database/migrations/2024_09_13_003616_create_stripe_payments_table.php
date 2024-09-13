@@ -13,15 +13,16 @@ return new class extends Migration
     {
         Schema::create('stripe_payments', function (Blueprint $table) {
             $table->id();
-            $table->integer('order_id')->index();
+            $table->foreignIdFor(\App\Models\Order::class, 'order_id')->nullable(true)->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->integer('user_id')->index();
-            $table->string('payment_type');
+            $table->string('payment_type')->nullable(false);
             $table->string('payment_reference_code')->index();
-            $table->string('stripe_charge_id')->index();
-            $table->string('stripe_transaction_id')->index();
-            $table->string('transaction_mode');
-            $table->text('payment_response');
+            $table->string('stripe_charge_id')->nullable(true)->index();
+            $table->string('stripe_transaction_id')->nullable(true)->index();
+            $table->string('transaction_mode')->nullable(true);
+            $table->text('payment_response')->nullable(true);
             $table->timestamps();
+            $table->engine('InnoDB');
         });
     }
 

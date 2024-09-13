@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('product_image')->nullable();
             $table->decimal('product_price', 20, 5)->default(0);
             $table->integer('product_quantity')->default(false);
-            $table->engine('InnoDB');
             $table->timestamps();
+            $table->engine('InnoDB');
         });
     }
 

@@ -30,8 +30,8 @@ return new class extends Migration
             $table->string('order_status')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->tinyInteger('is_email_sent')->default(0);
-            $table->engine('InnoDB');
             $table->timestamps();
+            $table->engine('InnoDB');
         });
     }
 
