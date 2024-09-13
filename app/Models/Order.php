@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $uuid
@@ -56,4 +56,26 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'uuid',
+        'order_total',
+        'service_amount',
+        'shipping_amount',
+        'tax_amount',
+        'coupon_amount',
+        'tax_title',
+        'shipping_method',
+        'coupon_code',
+        'order_date_time',
+        'payment_method',
+        'payment_reference_code',
+        'currency',
+        'order_pdf',
+        'order_status',
+        'status',
+        'is_email_sent',
+        'created_at',
+        'updated_at',
+    ];
 }

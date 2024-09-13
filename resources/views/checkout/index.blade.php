@@ -55,7 +55,7 @@
                                             <input type="text" name="address_line_2" class="form-control" id="address_line_2" placeholder="Apartment or suite">
                                         </div>
 
-                                        <div class="col-md-5">
+                                        <div class="col-md-6">
                                             <label for="country" class="form-label">Country</label>
                                             <select name="country" class="form-select" id="country">
                                                 <option value="">Choose...</option>
@@ -63,7 +63,7 @@
                                             </select>
                                         </div>
 
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <label for="state" class="form-label">State</label>
                                             <select name="state" class="form-select" id="state">
                                                 <option value="">Choose...</option>
@@ -71,9 +71,14 @@
                                             </select>
                                         </div>
 
-                                        <div class="col-md-3">
+                                        <div class="col-md-6">
+                                            <label for="city" class="form-label">City</label>
+                                            <input type="text" name="city" class="form-control" id="city">
+                                        </div>
+
+                                        <div class="col-md-6">
                                             <label for="postcode" class="form-label">Postcode</label>
-                                            <input type="text" name="postcode" class="form-control" id="postcode">
+                                            <input type="number" name="postcode" maxlength="4" class="form-control" id="postcode">
                                         </div>
                                     </div>
 
