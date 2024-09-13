@@ -16,11 +16,13 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
+        $product_name = $this->faker->sentence;
         return [
             'uuid' => Str::uuid(),
-            'name' => $this->faker->sentence,
-            'slug' => Str::slug($this->faker->sentence),
+            'name' => $product_name,
+            'slug' => Str::slug($product_name),
             'price' => rand(1, 100),
+            'image' => $this->faker->imageUrl(),
             'description' => $this->faker->paragraph,
         ];
     }
