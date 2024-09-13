@@ -53,4 +53,10 @@ trait CommonTrait {
     public function decimalPrice($amount, $decimal = 2) : string {
         return number_format($amount, $decimal, '.', '');
     }
+
+    public function generateOrderReferenceCode($cart): string {
+        $first_name_explode = explode(" ", $cart['customer']['first_name']);
+        $first_name_explode = preg_replace('/[^A-Za-z0-9\-]/', '', $first_name_explode);
+        return substr($first_name_explode[0], 0, 6).'-' . time();
+    }
 }

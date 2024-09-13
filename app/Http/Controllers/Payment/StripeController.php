@@ -12,7 +12,7 @@ class StripeController extends Controller
 {
     public function createPaymentIntent() {
 
-        $stripe_secret_key = getenv('STRIPE_SECRET_KEY');
+        $stripe_secret_key = env('STRIPE_SECRET_KEY');
 
         $stripe = new \Stripe\StripeClient([
             'api_key' => $stripe_secret_key,
@@ -25,14 +25,13 @@ class StripeController extends Controller
 
         $response = ['status' => 'error', 'message' => ''];
         try {
-            $payment_reference_code = uniqid();
+            $payment_reference_code = $this->generateOrderReferenceCode($cart);
             $payment_intent_data = [
                 'payment_method_types' => ['card'],
                 'amount' => $payable_amount * 100,
                 'currency' => $currency,
                 'metadata' => [
-                    'reference_code' => $payment_reference_code,
-                    'customer_id' => 'cus-123',
+                    'reference_code' => $payment_reference_code
                 ]
             ];
             $this->customLog('payment_intent_request_data: '. json_encode($payment_intent_data), 'stripe', 'stripe');

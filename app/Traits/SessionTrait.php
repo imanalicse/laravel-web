@@ -13,6 +13,10 @@ trait SessionTrait {
         session()->put($key, $value);
     }
 
+    public function sessionDelete(string $key) {
+        session()->forget($key);
+    }
+
     public function cartGet(string $sub_key = '', $default = null) {
         if (empty($sub_key)) {
             $cart = $this->sessionRead('cart', $default);
@@ -25,6 +29,10 @@ trait SessionTrait {
 
     public function cartSet(string $sub_key, $value) {
         $this->sessionWrite('cart.' .$sub_key, $value);
+    }
+
+    public function cartDelete() {
+        $this->sessionDelete('cart');
     }
 
     public function dbValidatedCart() {

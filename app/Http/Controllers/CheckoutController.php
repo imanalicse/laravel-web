@@ -77,9 +77,16 @@ class CheckoutController extends Controller
              $this->customLog('payment_confirm_response: '. json_encode($payment_intent), 'stripe', 'stripe');
             try {
                 $cart = $this->dbValidatedCart();
-                $cart['payment_reference_code'] = '';
+                $payment_intent_id = $payment_intent['id'];
+                \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+                $paymentIntent = \Stripe\PaymentIntent::retrieve($payment_intent_id);
+
+                $cart['payment_reference_code'] = $paymentIntent->metadata->reference_code;
                 $order_response = $this->orderService->createOrder($cart);
                 $this->customLog('order_response: '. json_encode($order_response), 'stripe', 'stripe');
+                if (!empty($order_response)) {
+                    $this->cartDelete();
+                }
 
                 $return_response['status'] = 'success';
                 $return_response['message'] = 'Order created';
