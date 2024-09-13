@@ -80,8 +80,8 @@ class CheckoutController extends Controller
                 $payment_intent_id = $payment_intent['id'];
                 \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
                 $paymentIntent = \Stripe\PaymentIntent::retrieve($payment_intent_id);
-
-                $cart['payment_reference_code'] = $paymentIntent->metadata->reference_code;
+                $reference_code = $paymentIntent->metadata->reference_code;
+                $cart['payment_reference_code'] = $reference_code;
                 $order_response = $this->orderService->createOrder($cart);
                 $this->customLog('order_response: '. json_encode($order_response), 'stripe', 'stripe');
                 if (!empty($order_response)) {
@@ -90,7 +90,7 @@ class CheckoutController extends Controller
 
                 $return_response['status'] = 'success';
                 $return_response['message'] = 'Order created';
-                $return_response['redirect_url'] = '/order/success';
+                $return_response['redirect_url'] = '/order/success/'.$order_response;
             }
             catch (\Exception $exception) {
                 $error_message = $exception->getMessage();
@@ -104,7 +104,7 @@ class CheckoutController extends Controller
         return response()->json($return_response);
     }
 
-    public function orderSuccess() {
-        return view('checkout.order-success');
+    public function orderSuccess($reference_code) {
+        return view('checkout.order-success', ['reference_code' => $reference_code]);
     }
 }

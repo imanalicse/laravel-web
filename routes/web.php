@@ -68,5 +68,5 @@ Route::post('/paypal/createPayPalOrder', [\App\Http\Controllers\Payment\PayPalCo
 Route::post('/paypal/orders/{paypal_order_id}/capture', [\App\Http\Controllers\Payment\PayPalController::class, 'capturePayPalPayment']);
 Route::get('/stripe/create-payment-intent', [\App\Http\Controllers\Payment\StripeController::class, 'createPaymentIntent']);
 Route::post('/stripe/order', [\App\Http\Controllers\CheckoutController::class, 'createStripeOrder']);
-Route::get('/order/success', [\App\Http\Controllers\CheckoutController::class, 'orderSuccess']);
+Route::get('/order/success/{reference_code}', [\App\Http\Controllers\CheckoutController::class, 'orderSuccess']);
 Route::get('/orders', [\App\Http\Controllers\OrderController::class, 'index']);
