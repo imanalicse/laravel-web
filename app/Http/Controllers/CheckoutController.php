@@ -77,15 +77,9 @@ class CheckoutController extends Controller
              $this->customLog('payment_confirm_response: '. json_encode($payment_intent), 'stripe', 'stripe');
             try {
                 $cart = $this->dbValidatedCart();
-                $order_date = [
-                    'order_total' => $cart['amount']['order_total'],
-                    'currency' => $cart['amount']['currency'],
-                    'order_date_time' => date('Y-m-d H:i:s'),
-                    'order_status' => 'Processing',
-                    'payment_reference_code' => $payment_intent['id'],
-                    'payment_method' => PaymentMethod::STRIPE
-                ];
-                $saved = $this->orderService->createOrder($order_date);
+                $cart['payment_reference_code'] = '';
+                $order_response = $this->orderService->createOrder($cart);
+                $this->customLog('order_response: '. json_encode($order_response), 'stripe', 'stripe');
 
                 $return_response['status'] = 'success';
                 $return_response['message'] = 'Order created';

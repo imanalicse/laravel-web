@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\Order::class)->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->integer('product_id')->default(false);
             $table->string('product_name')->nullable(false);
-            $table->string('slug')->nullable(false);
+            $table->string('slug')->nullable(true);
             $table->string('product_image')->nullable();
             $table->decimal('product_price', 20, 5)->default(0);
             $table->integer('product_quantity')->default(false);

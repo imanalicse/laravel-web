@@ -4,6 +4,8 @@
 namespace App\Services;
 
 
+use App\Enum\PaymentMethod;
+use App\Models\OrderProduct;
 use App\Repositories\OrderRepositoryInterface;
 
 class OrderService
@@ -26,10 +28,50 @@ class OrderService
     }
 
     // Business logic to create a new user
-    public function createOrder(array $data)
+    public function createOrder($cart)
     {
         // Add additional business logic, such as validation, here
-        return $this->orderRepository->create($data);
+        $order_data = [
+            'order_total' => $cart['amount']['order_total'],
+            'currency' => $cart['amount']['currency'],
+            'order_date_time' => date('Y-m-d H:i:s'),
+            'order_status' => 'Processing',
+            'payment_reference_code' => $cart['payment_reference_code'],
+            'payment_method' => PaymentMethod::STRIPE
+        ];
+
+        $prepare_response = [
+            'status' => 'error',
+            'message' => '',
+            'data' => []
+        ];
+
+        $order = $this->orderRepository->create($order_data);
+        if ($order) {
+            $order_id = $order['id'];
+            $prepare_response['data']['order_id'] = $order_id;
+
+            $cart_products = $cart['products'] ?? [];
+            if (!empty($cart_products)) {
+                $prepared_products = [];
+                foreach ($cart_products as $cart_product) {
+                    $order_product = [
+                        'product_id' => $cart_product['id'],
+                        'product_name' => $cart_product['name'],
+                        'product_price' => $cart_product['price'],
+                        'product_quantity' => $cart_product['quantity'],
+                    ];
+                    $prepared_products[] = new OrderProduct($order_product);
+                }
+                // Save all comments related to the post
+                $order_products = $order->order_products()->saveMany($prepared_products);
+                if (empty($order_products)) {
+                    // TODO write error log here
+                }
+            }
+        }
+
+        return $prepare_response;
     }
 
     // Business logic to update a user
