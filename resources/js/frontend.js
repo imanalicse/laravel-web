@@ -1,6 +1,6 @@
 import * as bootstrap from 'bootstrap';
-import './front_end';
-import './cart';
-import './paypal_payment';
-import './payment/stripe_payment_3';
-import './payment/payment'
+import './frontend/front_end';
+import './frontend/cart';
+import './frontend/paypal_payment';
+import './frontend/payment/stripe_payment_3';
+import './frontend/payment/payment'
