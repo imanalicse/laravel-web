@@ -5,10 +5,11 @@ namespace App\Services;
 
 
 use App\Enum\PaymentMethod;
+use App\Models\OrderCustomer;
 use App\Models\OrderProduct;
 use App\Repositories\OrderRepositoryInterface;
 
-class OrderService
+class OrderService extends BaseService
 {
     private OrderRepositoryInterface $orderRepository;
 
@@ -28,7 +29,7 @@ class OrderService
     }
 
     // Business logic to create a new user
-    public function createOrder($cart)
+    public function createOrder($cart): array
     {
         // Add additional business logic, such as validation, here
         $order_data = [
@@ -46,10 +47,31 @@ class OrderService
             'data' => []
         ];
 
+        $customer = $cart['customer'] ?? [];
+        $user_id = \Auth::id();
+        $prepare_customer = [
+            'user_id' => $user_id,
+            'first_name' => $customer['first_name'] ?? '',
+            'last_name' => $customer['last_name'] ?? '',
+            'email' => $customer['email'] ?? '',
+            'phone' => $customer['phone'] ?? '',
+            'address_line_1' => $customer['address_line_1'] ?? '',
+            'address_line_2' => $customer['address_line_2'] ?? '',
+            'country' => $customer['country'] ?? '',
+            'state' => $customer['state'] ?? '',
+            'city' => $customer['city'] ?? '',
+            'postcode' => $customer['postcode'] ?? '',
+        ];
+
         $order = $this->orderRepository->create($order_data);
         if ($order) {
             $order_id = $order['id'];
+            $this->customLog('order_data : '. json_encode($order), $order_id, 'orders');
             $prepare_response['data']['order_id'] = $order_id;
+
+            $order_customer_obj = new OrderCustomer($prepare_customer);
+            $order_customer = $order->customer()->save($order_customer_obj);
+            $this->customLog('order_customer : '. json_encode($order_customer), $order_id, 'orders');
 
             $cart_products = $cart['products'] ?? [];
             if (!empty($cart_products)) {
@@ -65,9 +87,7 @@ class OrderService
                 }
                 // Save all comments related to the post
                 $order_products = $order->order_products()->saveMany($prepared_products);
-                if (empty($order_products)) {
-                    // TODO write error log here
-                }
+                $this->customLog('order_products : '. json_encode($order_products), $order_id, 'orders');
             }
         }
 

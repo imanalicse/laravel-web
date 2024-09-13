@@ -13,17 +13,18 @@ return new class extends Migration
     {
         Schema::create('order_customers', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(\App\Models\User::class, 'user_id')->index();
             $table->foreignIdFor(\App\Models\Order::class, 'order_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email');
-            $table->string('phone');
+            $table->string('phone')->nullable();
             $table->string('address_line_1');
-            $table->string('address_line_2');
+            $table->string('address_line_2')->nullable();
             $table->string('country');
-            $table->string('state');
-            $table->string('city');
-            $table->string('postcode');
+            $table->string('state')->nullable();
+            $table->string('city')->nullable();
+            $table->string('postcode')->nullable();
             $table->timestamps();
             $table->engine('InnoDB');
         });

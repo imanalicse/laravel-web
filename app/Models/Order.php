@@ -79,7 +79,13 @@ class Order extends Model
         'updated_at',
     ];
 
-    public function order_products(): \Illuminate\Database\Eloquent\Relations\HasMany {
+    public function customer(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(OrderCustomer::class);
+    }
+
+    public function order_products(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
         return $this->hasMany(OrderProduct::class);
     }
 }
