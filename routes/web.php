@@ -14,6 +14,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Enum\UserRole;
@@ -75,10 +76,14 @@ Route::get('/order/success/{reference_code}', [\App\Http\Controllers\CheckoutCon
 Route::get('/orders', [\App\Http\Controllers\OrderController::class, 'index']);
 Route::get('/send-email', [\App\Http\Controllers\MailController::class, 'sendTestEmail']);
 
+// Resource API
 Route::get('/user/{id}', function (string $id) {
     return new UserResource(User::findOrFail($id));
 });
-
 Route::get('/users', function () {
     return new UserCollection(User::all());
+});
+
+Route::get('/products', function () {
+    return new \App\Http\Resources\ProductCollection(Product::paginate());
 });
