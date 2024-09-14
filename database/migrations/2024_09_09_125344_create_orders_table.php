@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->uuid()->default(DB::raw('UUID()'))->unique();
+            $table->foreignId('user_id');
             $table->decimal('order_total', 20, 5)->default(0);
             $table->decimal('service_amount', 20, 5)->default(0);
             $table->decimal('shipping_amount', 20, 5)->default(0);

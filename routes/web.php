@@ -12,6 +12,9 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserResource;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Enum\UserRole;
 
@@ -71,3 +74,11 @@ Route::post('/stripe/order', [\App\Http\Controllers\CheckoutController::class, '
 Route::get('/order/success/{reference_code}', [\App\Http\Controllers\CheckoutController::class, 'orderSuccess']);
 Route::get('/orders', [\App\Http\Controllers\OrderController::class, 'index']);
 Route::get('/send-email', [\App\Http\Controllers\MailController::class, 'sendTestEmail']);
+
+Route::get('/user/{id}', function (string $id) {
+    return new UserResource(User::findOrFail($id));
+});
+
+Route::get('/users', function () {
+    return new UserCollection(User::all());
+});

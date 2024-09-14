@@ -80,6 +80,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+    public function orders(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
     protected static function booted(): void
     {
         static::created(function (User $user) {
