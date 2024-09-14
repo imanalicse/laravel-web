@@ -70,3 +70,4 @@ Route::get('/stripe/create-payment-intent', [\App\Http\Controllers\Payment\Strip
 Route::post('/stripe/order', [\App\Http\Controllers\CheckoutController::class, 'createStripeOrder']);
 Route::get('/order/success/{reference_code}', [\App\Http\Controllers\CheckoutController::class, 'orderSuccess']);
 Route::get('/orders', [\App\Http\Controllers\OrderController::class, 'index']);
+Route::get('/send-email', [\App\Http\Controllers\MailController::class, 'sendTestEmail']);
