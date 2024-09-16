@@ -83,7 +83,3 @@ Route::get('/user/{id}', function (string $id) {
 Route::get('/users', function () {
     return new UserCollection(User::all());
 });
-
-Route::get('/products', function () {
-    return new \App\Http\Resources\ProductCollection(Product::paginate());
-});
