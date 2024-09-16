@@ -27,11 +27,16 @@ class LoginApiController extends Controller
         }
 
         $token = $user->createToken($request->device_name)->plainTextToken;
+        /*
+        $token = $user->createToken(
+            $request->device_name, ['*'], now()->addMinutes(60)
+        )->plainTextToken;
+        */
 
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
-            'expires_at' => 60*60,
+            // 'expires_in' => 60 * 60,
             'user' => $user,
         ]);
     }
