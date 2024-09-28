@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote')->hourly();
-
+/*
 Schedule::command(\App\Console\Commands\SendEmailsCommand::class, ['Iman'])
     ->everyTenSeconds()()->withoutOverlapping(5)->runInBackground()->onOneServer()
     ->before(function () {
@@ -22,5 +22,6 @@ Schedule::command(\App\Console\Commands\SendEmailsCommand::class, ['Iman'])
         // The task failed...
     })
 ;
+*/
 //->evenInMaintenanceMode()
 // ->appendOutputTo()->emailOutputOnFailure()

@@ -9,6 +9,7 @@
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
+        "sendgrid/sendgrid": "^8.1",
         "stripe/stripe-php": "^15.8"
     },
     "require-dev": {

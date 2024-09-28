@@ -12,17 +12,20 @@ class MailController extends Controller
 {
     public function sendTestEmail()
     {
-        Mail::raw('This is a test email', function ($message) {
+        $response = Mail::raw('This is a test email', function ($message) {
             $message->to('imanali.cse@gmail.com')
                 ->subject('Test Email from Laravel 11 via SendGrid');
         });
-        $order_id = 26;
-        $order = Order::find($order_id);
-
-       $email_response = Mail::to('imanali.cse@gmail.com')->send(new OrderCreated($order));
-       echo '<pre>';
-       print_r($email_response);
-       echo '</pre>';
+        echo '<pre>';
+        print_r($response);
+        echo '</pre>';
+//        $order_id = 26;
+//        $order = Order::find($order_id);
+//
+//       $email_response = Mail::to('imanali.cse@gmail.com')->send(new OrderCreated($order));
+//       echo '<pre>';
+//       print_r($email_response);
+//       echo '</pre>';
 
 //        $email = new \SendGrid\Mail\Mail();
 //        $email->setFrom(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
