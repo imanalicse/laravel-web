@@ -20,4 +20,6 @@ package-lock.json
 /.fleet
 /.idea
 /.vscode
+.phpstorm.meta.php
+_ide_helper.php
 !GITIGNORE/.env
