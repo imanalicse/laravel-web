@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 use App\Enum\UserRole;
 
 Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('dispatch-event/{order_id}', [PageController::class, 'dispatchEvent']);
 
 Route::get('/login', [LoginController::class, 'login'])->name("login");
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.submit');
