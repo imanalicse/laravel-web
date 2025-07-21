@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-Profile content
-
+Hello <?php echo $user['name'] ?>(<?php echo $user['id'] ?>)
 @endsection

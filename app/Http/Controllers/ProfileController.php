@@ -11,7 +11,8 @@ class ProfileController extends Controller
      */
     public function show()
     {
-        return view('profile.show');
+        $user = $this->getAuthUser();
+        return view('profile.show', ['user' => $user]);
     }
 
     /**

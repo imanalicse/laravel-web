@@ -6,6 +6,7 @@ trait CommonTrait {
     use SessionTrait;
     use PayPalTrait;
     use DatabaseConfigurationTrait;
+    use UserTrait;
 
     public function logDirectory() : string {
         return storage_path('logs');
