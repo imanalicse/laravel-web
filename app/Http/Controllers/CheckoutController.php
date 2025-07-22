@@ -68,7 +68,7 @@ class CheckoutController extends Controller
 
     public function createStripeOrder(Request $request): \Illuminate\Http\JsonResponse {
         $return_response = [
-            'status' => 'error',
+            'is_success' => 0,
             'message' => 'Something went wrong',
             'redirect_url' => '',
         ];
@@ -88,9 +88,10 @@ class CheckoutController extends Controller
                     $this->cartDelete();
                 }
 
-                $return_response['status'] = 'success';
+                $return_response['is_success'] = 1;
                 $return_response['message'] = 'Order created';
-                $return_response['redirect_url'] = '/order/success/'.$order_response;
+                $order_id = $order_response['data']['order_id'] ?? null;
+                $return_response['redirect_url'] = '/order/success/'.$order_id;
             }
             catch (\Exception $exception) {
                 $error_message = $exception->getMessage();

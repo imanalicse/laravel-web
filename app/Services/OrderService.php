@@ -32,7 +32,9 @@ class OrderService extends BaseService
     public function createOrder($cart): array
     {
         // Add additional business logic, such as validation, here
+        $user_id = $this->getAuthId();
         $order_data = [
+            'user_id' => $user_id,
             'order_total' => $cart['amount']['order_total'],
             'currency' => $cart['amount']['currency'],
             'order_date_time' => date('Y-m-d H:i:s'),
@@ -42,13 +44,12 @@ class OrderService extends BaseService
         ];
 
         $prepare_response = [
-            'status' => 'error',
+            'is_success' => 0,
             'message' => '',
             'data' => []
         ];
 
         $customer = $cart['customer'] ?? [];
-        $user_id = \Auth::id();
         $prepare_customer = [
             'user_id' => $user_id,
             'first_name' => $customer['first_name'] ?? '',
@@ -68,6 +69,7 @@ class OrderService extends BaseService
             $order_id = $order['id'];
             $this->customLog('order_data : '. json_encode($order), $order_id, 'orders');
             $prepare_response['data']['order_id'] = $order_id;
+            $prepare_response['is_success'] = 1;
 
             $order_customer_obj = new OrderCustomer($prepare_customer);
             $order_customer = $order->customer()->save($order_customer_obj);

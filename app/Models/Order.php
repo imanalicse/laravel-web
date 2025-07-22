@@ -59,6 +59,7 @@ class Order extends Model
 
     protected $fillable = [
         'uuid',
+        'user_id',
         'order_total',
         'service_amount',
         'shipping_amount',
