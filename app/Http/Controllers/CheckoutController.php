@@ -25,7 +25,7 @@ class CheckoutController extends Controller
         if (!Auth::check()) {
             return redirect()->to('/login');
         }
-        $user = Auth::user();
+        $user = $this->getAuthUser();
         return view('checkout.index', compact('cart', 'user'));
     }
 

@@ -2,7 +2,7 @@
 namespace App\Traits;
 
 trait CommonTrait {
-
+    use UtilsTrait;
     use SessionTrait;
     use PayPalTrait;
     use DatabaseConfigurationTrait;

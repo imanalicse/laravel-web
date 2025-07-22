@@ -21,7 +21,8 @@ paypal
             })
                 .then((response) => response.json())
                 .then((response) => {
-                    if(response.status === 'success' && response.data && response.data.id) {
+                    debugger
+                    if(response.is_success && response.data && response.data.id) {
                         return response.data.id;
                     }
                     else {
@@ -55,7 +56,7 @@ paypal
                     console.log('transaction', transaction)
                     */
                     try {
-                        if (response.status === 'success') {
+                        if (response.is_success) {
                             $(".js_payment_message").html("<span class='success'>" + response.message + "</span>");
                             if (response.redirect) {
                                 window.location.replace(response.redirect);

@@ -11,7 +11,7 @@ use GuzzleHttp\Client;
 class PayPalController extends Controller
 {
     public function createPayPalOrder() {
-
+        $return_data = ['is_success' => false, 'message' => '', 'data' => []];
         try {
             $cart = $this->cartGet();
 //            $validation_result = $this->getComponent('Order.OrderProcess')->prePaymentOrderValidation($cart);
@@ -21,17 +21,15 @@ class PayPalController extends Controller
 //            }
             $request_data = $this->payPalRequestData();
             if (empty($request_data)) {
-                echo json_encode(['status' => 'error', 'message' => 'Request data is empty.']);
+                $return_data['message'] = 'Request data is empty.';
+                echo $this->jsonEncode($return_data);
                 die();
             }
 
             $access_token = $this->generatePapPalAccessToken();
             if (empty($access_token)) {
-                $return_response = [
-                    'status' => 'error',
-                    'message' => 'Unable to create access token'
-                ];
-                echo json_encode($return_response, JSON_UNESCAPED_SLASHES);
+                $return_data['message'] = 'Unable to create access token';
+                echo $this->jsonEncode($return_data);
                 die();
             }
 
@@ -40,41 +38,33 @@ class PayPalController extends Controller
             $url = $this->getPayPalBaseUrl() . '/v2/checkout/orders';
             $response = Http::withToken($access_token)->post($url, $request_data);
             $status_code = $response->status();
-            $response_data = $response->json();
+            $payment_response_data = $response->json();
             $this->customLog( "paypal_response_data:$status_code: ". $response->body(), 'pay_pal', 'pay_pal');
             if ($response->successful()) {
-                $return_response = [
-                    'status' => 'success',
-                    'message' => 'PalPal order has been created successfully',
-                    'data' => $response_data
-                ];
-                echo json_encode($return_response, JSON_UNESCAPED_SLASHES);
+                $return_data['is_success'] = true;
+                $return_data['message'] = 'PalPal order has been created successfully';
+                $return_data['data'] = $payment_response_data;
+                echo $this->jsonEncode($return_data);
                 die();
             }
             $this->customLog( 'paypal_order_response: '. $response->body(), 'pay_pal_error', 'pay_pal');
-            $exception = $response_data['message'] ?? 'Unable to create PayPal Order';
-            $return_response = [
-                'status' => 'error',
-                'message' => $exception
-            ];
-            echo json_encode($return_response, JSON_UNESCAPED_SLASHES);
+            $exception = $payment_response_data['message'] ?? 'Unable to create PayPal Order';
+            $return_data['message'] = $exception;
+            echo $this->jsonEncode($return_data);
             die();
         }
         catch (\Exception $exception) {
             $error_message = $exception->getMessage();
             $this->customLog( 'Error in createPayPalOrder: '. $exception->getMessage(), 'pay_pal_error', 'pay_pal');
-            $return_response = [
-                'status' => 'error',
-                'message' => $error_message
-            ];
-            echo json_encode($return_response, JSON_UNESCAPED_SLASHES);
+            $return_data['message'] = $error_message;
+            echo $this->jsonEncode($return_data);
             die();
         }
     }
 
     public function capturePayPalPayment($paypal_order_id) {
         $return_response = [
-            'status' => 'error',
+            'is_success' => 0,
             'message' => 'Unknown error'
         ];
             try {
@@ -91,7 +81,7 @@ class PayPalController extends Controller
 
                 $access_token = $this->generatePapPalAccessToken();
                 if (empty($access_token)) {
-                    $return_response['status'] = 'error';
+                    $return_response['is_success'] = 0;
                     $return_response['message'] = 'Unable to create access token';
                     echo json_encode($return_response);
                     die();
@@ -117,7 +107,7 @@ class PayPalController extends Controller
                 });
                 if (!$response->successful()) {
                     $this->customLog("pay_pal_error_response: $status_code: ". $response->body(), 'pay_pal_error', 'pay_pal');
-                    $return_response['status'] = 'error';
+                    $return_response['is_success'] = 0;
                     $return_response['message'] = 'Error in payment. Please try again.';
                     echo json_encode($return_response);
                     die();
@@ -143,7 +133,7 @@ class PayPalController extends Controller
                 // $this->customLog('saved_pay_pal_payment:'. json_encode($saved_payment), 'pay_pal', 'pay_pal');
 
                 if ($payment_response['status'] === 'COMPLETED' && !empty($transaction_id)) {
-                    $return_response['status'] = 'error';
+                    $return_response['is_success'] = 0;
                     $return_response['message'] = 'Payment has been approved';
                     // Create New order
                     try {
@@ -165,7 +155,7 @@ class PayPalController extends Controller
                                 $this->customLog('cart_data: '. json_encode($cart), 'order_error', 'pay_pal');
                                 $return_response['message'] = 'Order created but unable to update payment record';
                             }
-                            $return_response['status'] = 'success';
+                            $return_response['is_success'] = 1;
                             $return_response['redirect'] = ''; // $this->generateUrl('/checkout/success');
                             echo json_encode($return_response);
                             die();
@@ -181,20 +171,20 @@ class PayPalController extends Controller
                     catch (\Exception $exception) {
                         $this->customLog('payment_response: '. json_encode($payment_response), 'payment_but_not_order', 'pay_pal');
                         $this->customLog('cart_data: '. json_encode($cart), 'payment_but_not_order', 'pay_pal');
-                        $return_response['status'] = 'error';
+                        $return_response['is_success'] = 0;
                         $return_response['message'] = 'Payment has been approved but order not placed. error: '. $exception->getMessage();
                         echo json_encode($return_response);
                         die();
                     }
                 }
                 else {
-                    $return_response['status'] = 'error';
+                    $return_response['is_success'] = 0;
                     $return_response['message'] = 'Payment has been declined';
                 }
             }
             catch (\Exception $exception) {
                 $this->customLog('Error in capturePayPalPayment: ' . $exception->getMessage(), 'pay_pal_error', 'pay_pal');
-                $return_response['status'] = 'error';
+                $return_response['is_success'] = 0;
                 $return_response['message'] = 'Exception: '. $exception->getMessage();
             }
 
