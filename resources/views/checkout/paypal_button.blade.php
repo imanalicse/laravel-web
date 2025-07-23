@@ -6,4 +6,7 @@ $paypal_client_id = env('PAYPAL_CLIENT_ID_TEST');
 @push('scripts_top')
     <script src="https://www.paypal.com/sdk/js?client-id=<?php echo $paypal_client_id; ?>&currency=<?php echo $currency; ?>&disable-funding=card"></script>
 @endpush
+@push('scripts')
+    @vite('resources/js/frontend/paypal_payment.js')
+@endpush
 <div id="paypal-button-container"></div>
