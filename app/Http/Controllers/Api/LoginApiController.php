@@ -15,7 +15,7 @@ class LoginApiController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-            'device_name' => 'required',
+            // 'device_name' => 'required',
         ]);
 
         $user = User::where('email', $request->email)->first();
@@ -26,7 +26,8 @@ class LoginApiController extends Controller
             ]);
         }
 
-        $token = $user->createToken($request->device_name)->plainTextToken;
+        // $token = $user->createToken($request->device_name)->plainTextToken;
+        $token = $user->createToken('api_token')->plainTextToken;
         /*
         $token = $user->createToken(
             $request->device_name, ['*'], now()->addMinutes(60)

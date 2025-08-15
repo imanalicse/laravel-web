@@ -8,7 +8,7 @@ Route::get('/products', function () {
     return new \App\Http\Resources\ProductCollection(Product::paginate());
 });
 
-Route::post('/login', [\App\Http\Controllers\Api\LoginApiController::class, 'loginApi']);
+Route::post('/v1/auth/login', [\App\Http\Controllers\Api\LoginApiController::class, 'loginApi']);
 
 Route::middleware('auth:sanctum')->group( function () {
     Route::get('/profile', [\App\Http\Controllers\Api\LoginApiController::class, 'getProfile']);

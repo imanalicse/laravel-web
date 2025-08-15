@@ -43,7 +43,7 @@ class LoginController extends Controller
     }
 
     public function confirmPassword(Request $request) : RedirectResponse {
-        if (! Hash::check($request->password, $request->user()->password)) {
+        if (!Hash::check($request->password, $request->user()->password)) {
             return back()->withErrors([
                 'password' => ['The provided password does not match our records.']
             ]);
