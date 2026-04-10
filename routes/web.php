@@ -24,9 +24,9 @@ Route::get('dispatch-event/{order_id}', [PageController::class, 'dispatchEvent']
 Route::get('dispatch-job/', [PageController::class, 'dispatchJob']);
 
 Route::get('/login', [LoginController::class, 'login'])->name("login");
-Route::post('/login', [LoginController::class, 'authenticate'])->name('login.submit');
+Route::post('/login', [LoginController::class, 'authenticate'])->middleware('throttle:5,1')->name('login.submit');
 Route::get('/registration', [RegisterController::class,'registration'])->name("registration");
-Route::post('/registration', [RegisterController::class, 'registrationSubmit'])->name('registration.submit');
+Route::post('/registration', [RegisterController::class, 'registrationSubmit'])->middleware('throttle:5,1')->name('registration.submit');
 Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
 Route::get('/products', [ProductController::class, 'index'])->name("products");
@@ -39,7 +39,7 @@ Route::singleton('profile', ProfileController::class)->middleware('auth.basic');
 
 Route::prefix('admin')->group(static function() {
     Route::get('/login', [AdminLoginController::class, 'login'])->name("admin.login");
-    Route::post('/login', [AdminLoginController::class, 'authenticate'])->name('admin.login.submit');
+    Route::post('/login', [AdminLoginController::class, 'authenticate'])->middleware('throttle:5,1')->name('admin.login.submit');
 
     Route::middleware('auth:admin')->group(static function () {
         Route::get('/', [DashboardController::class, 'index']);

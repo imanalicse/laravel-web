@@ -24,14 +24,14 @@ class AdminLoginController extends Controller
             'password' => ['required'],
         ]);
 
-        $user = User::with('roles')->whereEmail($request->email)->first()->toArray();
-        if(empty($user) || empty($user['roles'])) {
+        $user = User::with('roles')->whereEmail($request->email)->first();
+        if(empty($user) || empty($user->roles)) {
             return back()->withErrors([
                 'email' => 'The provided credentials do not match our records.',
             ])->onlyInput('email');
         }
 
-        $roles = $user['roles'];
+        $roles = $user->roles->toArray();
         if (! $this->hasRole($roles, [UserRole::SUPER_ADMIN, UserRole::ADMIN])) {
             return back()->withErrors([
                 'email' => 'The provided credentials do not match our records.',

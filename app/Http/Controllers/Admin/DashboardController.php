@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Routing\Attributes\Controllers\Middleware;
 
+#[Middleware('auth:admin')]
 class DashboardController extends Controller
 {
     public function index()

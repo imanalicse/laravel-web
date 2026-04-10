@@ -15,11 +15,11 @@ class ProductService
         $this->productRepository = $productRepository;
     }
 
-    public function getAllProducts() {
+    public function getAllProducts(): \Illuminate\Database\Eloquent\Collection {
         return $this->productRepository->all();
     }
 
-    public function getPaginatedProducts()
+    public function getPaginatedProducts(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         return $this->productRepository->paginate();
     }

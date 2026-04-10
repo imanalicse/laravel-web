@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Laravel 13 e-commerce application with multi-payment support (PayPal, Stripe), role-based access control, and separate admin panel. Uses PHP 8.3+, Bootstrap 5, jQuery, and Vite.
+Laravel 13 e-commerce application with multi-payment support (PayPal, Stripe), role-based access control, separate admin panel, and AI-powered features. Uses PHP 8.3+, Bootstrap 5, jQuery, Vite, and Laravel AI SDK.
 
 ## Common Commands
 
@@ -60,10 +60,24 @@ Three roles via `App\Enum\UserRole`: SUPER_ADMIN, ADMIN, CUSTOMER. Roles are man
 - **Services** (`app/Services/`): `ProductService`, `OrderService` contain business logic. `OrderService` handles the full order creation flow (order + customer + products + logging).
 - **Traits** (`app/Traits/`): `CommonTrait` composes all others and is used by controllers, services, and middleware. Provides: `customLog()`, `hasRole()`, `decimalPrice()`, cart session helpers (`cartGet/cartSet/cartDelete`), PayPal API methods, and auth user helpers.
 
+### Laravel 13 Features in Use
+
+- **JSON:API Resources** (`app/Http/Resources/*JsonApiResource.php`): Spec-compliant `application/vnd.api+json` responses for the v2 API. Extend `JsonApiResource` with declarative `$attributes` and `$relationships` arrays.
+- **PHP Attributes on Controllers**: Admin controllers use `#[Middleware('auth:admin')]` class-level attributes instead of route-group middleware.
+- **Queue Job Attributes**: `SendEmailJob` uses `#[Tries(3)]`, `#[Timeout(60)]`, `#[Backoff(10, 30)]`, `#[FailOnTimeout]` instead of class properties.
+- **AI SDK** (`laravel/ai`): `ProductDescriptionAgent` in `app/Ai/Agents/` generates product descriptions. Config in `config/ai.php`. Requires an AI provider API key (e.g., `OPENAI_API_KEY`) in `.env`.
+
+### API Versioning
+
+- **v1** (`api/v1/*`): Original endpoints using standard JSON resources.
+- **v2** (`api/v2/*`): JSON:API spec-compliant endpoints using `JsonApiResource`. Supports sparse fieldsets (`?fields[products]=name,price`) and includes (`?include=orders`).
+- **AI endpoints** (`api/ai/*`): AI-powered features, auth required via Sanctum.
+
 ### Payment Flow
 
-- **Stripe**: `StripeController` creates PaymentIntent -> frontend confirms -> `CheckoutController@createStripeOrder` verifies with Stripe API and creates order via `OrderService`.
+- **Stripe**: `StripeController` creates PaymentIntent -> frontend confirms -> `CheckoutController@createStripeOrder` verifies with Stripe API and creates order via `OrderService`. Order creation is wrapped in `DB::transaction()`.
 - **PayPal**: `PayPalController` handles order creation and capture through PayPal REST API. Access tokens and API calls managed in `PayPalTrait`.
+- Payment credentials are accessed via `config('services.stripe.secret')` and `config('services.paypal.*')` — never use `env()` directly in application code.
 
 CSRF is disabled for `stripe/*` routes in `bootstrap/app.php`.
 
@@ -101,4 +115,6 @@ Default connection is `sqlite` in `.env.example`, but the project uses MySQL in 
 
 - **CleanWebpackPlugin hazard**: Do NOT use CleanWebpackPlugin with Webpack 5 — it previously deleted the entire source directory. The project now uses Vite.
 - **Node compatibility**: Project must be compatible with Node 22.17.1.
+- **Never use `env()` in application code** — always use `config()`. The `env()` helper returns null when config is cached. Third-party credentials are in `config/services.php`.
+- **Rate limiting**: Login and registration routes have `throttle:5,1` middleware (5 attempts per minute).
 - The `composer.lock` is gitignored.

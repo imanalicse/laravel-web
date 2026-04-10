@@ -6,6 +6,7 @@ use App\Enum\PaymentMethod;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CheckoutController extends Controller
 {
@@ -78,11 +79,13 @@ class CheckoutController extends Controller
             try {
                 $cart = $this->dbValidatedCart();
                 $payment_intent_id = $payment_intent['id'];
-                \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+                \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
                 $paymentIntent = \Stripe\PaymentIntent::retrieve($payment_intent_id);
                 $reference_code = $paymentIntent->metadata->reference_code;
                 $cart['payment_reference_code'] = $reference_code;
-                $order_response = $this->orderService->createOrder($cart);
+                $order_response = DB::transaction(function () use ($cart) {
+                    return $this->orderService->createOrder($cart);
+                });
                 $this->customLog('order_response: '. json_encode($order_response), 'stripe', 'stripe');
                 if (!empty($order_response)) {
                     $this->cartDelete();

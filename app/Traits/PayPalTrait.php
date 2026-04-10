@@ -19,19 +19,18 @@ trait PayPalTrait {
         return $paypal_base_url;
     }
 
-    public function getPayPalClientId() {
+    public function getPayPalClientId(): ?string {
         $transaction_mode = $this->getPayPalTransactionMode();
-        return env('PAYPAL_CLIENT_ID_'. $transaction_mode);
+        return config("services.paypal.client_id.$transaction_mode");
     }
 
-    public function getPayPalSecretKey() {
+    public function getPayPalSecretKey(): ?string {
         $transaction_mode = $this->getPayPalTransactionMode();
-        return env('PAYPAL_SECRET_KEY_'. $transaction_mode);
+        return config("services.paypal.secret_key.$transaction_mode");
     }
 
     public function getPayPalAuthorizationCode() : string {
-        $transaction_mode = $this->getPayPalTransactionMode();
-        $paypal_secret_key = env('PAYPAL_SECRET_KEY_'. $transaction_mode);
+        $paypal_secret_key = $this->getPayPalSecretKey();
         $auth_code = $this->getPayPalClientId() . ':' . $paypal_secret_key;
         return base64_encode($auth_code);
     }

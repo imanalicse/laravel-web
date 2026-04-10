@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers\Payment;
 
-use App\Enum\PaymentMethod;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Http;
-use GuzzleHttp\Client;
-
 
 class StripeController extends Controller
 {
-    public function createPaymentIntent() {
+    public function createPaymentIntent(): \Illuminate\Http\JsonResponse {
 
-        $stripe_secret_key = env('STRIPE_SECRET_KEY');
+        $stripe_secret_key = config('services.stripe.secret');
 
         $stripe = new \Stripe\StripeClient([
             'api_key' => $stripe_secret_key,
@@ -43,16 +39,16 @@ class StripeController extends Controller
             $response['status'] = 'success';
         }
         catch (\Stripe\Exception\ApiErrorException $exception) {
-            http_response_code(400);
             $error_message = $exception->getMessage();
             $response['message'] = 'Exception: '. $error_message;
+            return response()->json($response, 400);
         }
         catch (\Exception $exception) {
-            http_response_code(500);
             $error_message = $exception->getMessage();
             $response['message'] = 'Exception: '. $error_message;
+            return response()->json($response, 500);
         }
 
-        echo json_encode($response);
+        return response()->json($response);
     }
 }
