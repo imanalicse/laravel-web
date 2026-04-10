@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -88,6 +89,12 @@ class User extends Authenticatable
 
     protected static function booted(): void
     {
+        static::creating(function (User $user) {
+            if (empty($user->uuid)) {
+                $user->uuid = Str::uuid();
+            }
+        });
+
         static::created(function (User $user) {
             Log::info("User has been created with email address ($user->email).");
         });

@@ -9,3 +9,7 @@ php artisan optimize:clear
 
 
 php artisan clear-compiled - bootstrap/cache
+
+### Production Optimization (All in One)
+`php artisan optimize` - enable cache
+`php artisan optimize:clear` - clear cache
