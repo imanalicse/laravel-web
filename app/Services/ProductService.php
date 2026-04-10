@@ -10,7 +10,7 @@ class ProductService
 {
     private ProductRepositoryInterface $productRepository;
 
-    public function __construct(productRepositoryInterface $productRepository)
+    public function __construct(ProductRepositoryInterface $productRepository)
     {
         $this->productRepository = $productRepository;
     }

@@ -43,7 +43,7 @@ class CheckoutController extends Controller
         $customer = [
           'first_name' => $request->first_name,
           'last_name' => $request->last_name,
-          'email' => $request->last_name,
+          'email' => $request->email,
           'phone' => $request->phone,
           'address_line_1' => $request->input('address_line_1'),
           'address_line_2' => $request->input('address_line_2'),

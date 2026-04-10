@@ -19,7 +19,7 @@ class LoginPageRedirection
         if (!Auth::check()) {
              $route_prefix = trim($request->route()->getPrefix(), '/');
              if ($route_prefix == 'admin') {
-                 redirect()->route('admin.login');                
+                 return redirect()->route('admin.login');
              }
         }
         return $next($request);

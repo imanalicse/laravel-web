@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class LogoutController extends Controller
 {
 
-    public function logout(Request $request) : redirectResponse
+    public function logout(Request $request) : RedirectResponse
     {
         $is_admin = false;
         if(Auth::guard('admin')->check()) {
