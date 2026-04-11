@@ -21,10 +21,12 @@
         @include('layouts.includes.header')
     @show
 
-    <div class="container-fluid">
-         @include('shared.flash-messages')
+    <main class="site-main">
+         <div class="container-fluid px-0">
+             @include('shared.flash-messages')
+         </div>
          @yield('content')
-    </div>
+    </main>
 
     @section('footer')
         @include('layouts.includes.footer')
