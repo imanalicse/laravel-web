@@ -32,6 +32,8 @@ Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 Route::get('/products', [ProductController::class, 'index'])->name("products");
 
 Route::post('/add-to-cart', [CartController::class, 'addToCart']);
+Route::get('/cart', [CartController::class, 'index'])->name('cart');
+Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
 Route::get('/checkout', [CheckoutController::class, 'index']);
 Route::post('/checkout', [CheckoutController::class,'checkout']);
 
