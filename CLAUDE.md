@@ -31,6 +31,11 @@ php artisan test                           # Run all tests
 php artisan test --filter=ExampleTest      # Run single test class
 php artisan test tests/Feature/ExampleTest.php  # Run single test file
 
+# Queue
+php artisan queue:work          # Process queued jobs (run in separate terminal)
+php artisan queue:failed        # List failed jobs
+php artisan queue:retry all     # Retry all failed jobs
+
 # Code style
 ./vendor/bin/pint             # Fix code style (Laravel Pint)
 ./vendor/bin/pint --test      # Check without fixing
@@ -57,14 +62,14 @@ Three roles via `App\Enum\UserRole`: SUPER_ADMIN, ADMIN, CUSTOMER. Roles are man
 **Controllers -> Services -> Repositories -> Models**
 
 - **Repositories** (`app/Repositories/`): `ProductRepository`, `OrderRepository` implementing interfaces. Bound in `RepositoryServiceProvider`.
-- **Services** (`app/Services/`): `ProductService`, `OrderService` contain business logic. `OrderService` handles the full order creation flow (order + customer + products + logging).
+- **Services** (`app/Services/`): `ProductService`, `OrderService` contain business logic. `OrderService` handles the full order creation flow (order + customer + products + logging + dispatches `SendOrderEmailJob`).
 - **Traits** (`app/Traits/`): `CommonTrait` composes all others and is used by controllers, services, and middleware. Provides: `customLog()`, `hasRole()`, `decimalPrice()`, cart session helpers (`cartGet/cartSet/cartDelete`), PayPal API methods, and auth user helpers.
 
 ### Laravel 13 Features in Use
 
 - **JSON:API Resources** (`app/Http/Resources/*JsonApiResource.php`): Spec-compliant `application/vnd.api+json` responses for the v2 API. Extend `JsonApiResource` with declarative `$attributes` and `$relationships` arrays.
 - **PHP Attributes on Controllers**: Admin controllers use `#[Middleware('auth:admin')]` class-level attributes instead of route-group middleware.
-- **Queue Job Attributes**: `SendEmailJob` uses `#[Tries(3)]`, `#[Timeout(60)]`, `#[Backoff(10, 30)]`, `#[FailOnTimeout]` instead of class properties.
+- **Queue Job Attributes**: Jobs use `#[Tries(3)]`, `#[Timeout(60)]`, `#[Backoff(10, 30)]`, `#[FailOnTimeout]` PHP attributes instead of class properties.
 - **AI SDK** (`laravel/ai`): `ProductDescriptionAgent` in `app/Ai/Agents/` generates product descriptions. Config in `config/ai.php`. Requires an AI provider API key (e.g., `OPENAI_API_KEY`) in `.env`.
 
 ### API Versioning
@@ -76,7 +81,8 @@ Three roles via `App\Enum\UserRole`: SUPER_ADMIN, ADMIN, CUSTOMER. Roles are man
 ### Payment Flow
 
 - **Stripe**: `StripeController` creates PaymentIntent -> frontend confirms -> `CheckoutController@createStripeOrder` verifies with Stripe API and creates order via `OrderService`. Order creation is wrapped in `DB::transaction()`.
-- **PayPal**: `PayPalController` handles order creation and capture through PayPal REST API. Access tokens and API calls managed in `PayPalTrait`.
+- **PayPal**: `PayPalController` handles order creation and capture through PayPal REST API v2. Injects `OrderService` for order creation. Access tokens and API calls managed in `PayPalTrait`. Capture endpoint requires `(object) []` body (not empty) to avoid `MALFORMED_REQUEST_JSON`.
+- Both flows create orders via `OrderService::createOrder($cart)` which expects `$cart['payment_reference_code']` and `$cart['payment_method']` at the top level. After success, both redirect to `/order/success/{order_id}` and clear the cart.
 - Payment credentials are accessed via `config('services.stripe.secret')` and `config('services.paypal.*')` — never use `env()` directly in application code.
 
 CSRF is disabled for `stripe/*` routes in `bootstrap/app.php`.
@@ -99,6 +105,8 @@ The storefront uses a custom e-commerce design built with Bootstrap 5 classes an
 - **Home page** (`page/home.blade.php`): Hero banner with CTA buttons, 4-feature strip (shipping, returns, security, support), dark CTA section.
 - **Product listing** (`product/index.blade.php`): CSS Grid layout (`grid-template-columns: repeat(auto-fill, minmax(260px, 1fr))`), product cards with hover lift + image zoom, add-to-cart with cart icon.
 - **Cart page** (`cart/index.blade.php`): Table-style item list with quantity controls, remove button, order summary sidebar with "Proceed to Checkout", empty state with CTA.
+- **Profile page** (`profile/show.blade.php`, `profile/edit.blade.php`): User info card with avatar, recent orders list, edit form for name/email/password. Singleton resource route with `auth.basic` middleware.
+- **Order success page** (`checkout/order-success.blade.php`): Confirmation page with green checkmark, order details, items list, shipping address, total, and action buttons.
 
 ### Cart System
 
@@ -123,6 +131,24 @@ User, Product, Order, and OrderProduct models generate UUIDs. User UUID is gener
 ### Database
 
 Default connection is `sqlite` in `.env.example`, but the project uses MySQL in practice. The `active` field on users controls login eligibility. Password hashing is handled by the `hashed` cast on the User model — do not manually `bcrypt()` or `Hash::make()` passwords before storing.
+
+### Queue & Jobs
+
+Queue connection is `database`. Jobs are stored in the `jobs` table and processed by a worker.
+
+```bash
+php artisan queue:work          # Process jobs (run in separate terminal)
+php artisan queue:work --once   # Process one job and stop
+php artisan queue:failed        # List failed jobs
+php artisan queue:retry all     # Retry all failed jobs
+```
+
+**Jobs** (`app/Jobs/`):
+- `SendOrderEmailJob` — Dispatched by `OrderService` after order creation. Sends `OrderCreated` mailable to the customer email, updates `is_email_sent` flag. Uses `#[Tries(3)]`, `#[Timeout(60)]`, `#[Backoff(10, 30)]`.
+- `SendEmailJob` — Generic email job (currently logs only, mail send commented out).
+
+**Mailables** (`app/Mail/`):
+- `OrderCreated` — Order confirmation email. Uses `mail.orders.created` blade template. Receives the `Order` model with `customer` and `order_products` relationships eager-loaded.
 
 ### Custom Logging
 

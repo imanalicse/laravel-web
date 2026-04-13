@@ -5,6 +5,7 @@ namespace App\Services;
 
 
 use App\Enum\PaymentMethod;
+use App\Jobs\SendOrderEmailJob;
 use App\Models\OrderCustomer;
 use App\Models\OrderProduct;
 use App\Repositories\OrderRepositoryInterface;
@@ -91,6 +92,8 @@ class OrderService extends BaseService
                 $order_products = $order->order_products()->saveMany($prepared_products);
                 $this->customLog('order_products : '. json_encode($order_products), $order_id, 'orders');
             }
+
+            SendOrderEmailJob::dispatch($order->load('customer', 'order_products'));
         }
 
         return $prepare_response;
