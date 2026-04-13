@@ -1,0 +1,2 @@
+php artisan make:middleware EnsureTokenIsValid
+php artisan make:middleware CheckUserRoleMiddleware
