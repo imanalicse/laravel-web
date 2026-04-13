@@ -109,6 +109,11 @@ class CheckoutController extends Controller
     }
 
     public function orderSuccess($reference_code) {
-        return view('checkout.order-success', ['reference_code' => $reference_code]);
+        $order = \App\Models\Order::with('customer', 'order_products')->find($reference_code);
+
+        return view('checkout.order-success', [
+            'reference_code' => $reference_code,
+            'order' => $order,
+        ]);
     }
 }

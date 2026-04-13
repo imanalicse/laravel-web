@@ -118,12 +118,10 @@ class PayPalController extends Controller
                         $order_response = $this->orderService->createOrder($cart);
                         $order_id = $order_response['data']['order_id'] ?? null;
                         if ($order_response['is_success'] && $order_id > 0) {
-                            $update_data = [];
-                            $update_data['order_id'] = $order_id;
-                            $update_data['order_status'] = 1;
+                            $this->cartDelete();
                             $return_response['message'] = 'Order has been created successfully';
                             $return_response['is_success'] = 1;
-                            $return_response['redirect'] = '';
+                            $return_response['redirect'] = '/order/success/' . $order_id;
                             return response()->json($return_response);
                         }
                         else {
