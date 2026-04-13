@@ -89,6 +89,27 @@ Vite config has four entry points:
 
 Layouts: `layouts/app.blade.php` (frontend), `layouts/admin.blade.php` (admin), `layouts/auth.blade.php` (auth pages).
 
+### Frontend Design
+
+The storefront uses a custom e-commerce design built with Bootstrap 5 classes and custom CSS in `resources/css/front-end.css`:
+
+- **Header** (`layouts/includes/header.blade.php`): Dark top bar with promo text + account links, white navbar with "LaraShop" brand, active nav states, cart icon with server-side badge count (reads `session('cart.products')`), mobile hamburger menu.
+- **Footer** (`layouts/includes/footer.blade.php`): Dark themed with brand column, social icons, Shop/Support/Company links, payment badges, copyright bar.
+- **Auth pages** (`auth/login.blade.php`, `auth/register.blade.php`): Centered card layout with `.auth-card` / `.auth-page` classes, input groups with leading icons, hover-lift submit buttons.
+- **Home page** (`page/home.blade.php`): Hero banner with CTA buttons, 4-feature strip (shipping, returns, security, support), dark CTA section.
+- **Product listing** (`product/index.blade.php`): CSS Grid layout (`grid-template-columns: repeat(auto-fill, minmax(260px, 1fr))`), product cards with hover lift + image zoom, add-to-cart with cart icon.
+- **Cart page** (`cart/index.blade.php`): Table-style item list with quantity controls, remove button, order summary sidebar with "Proceed to Checkout", empty state with CTA.
+
+### Cart System
+
+Session-based cart using `SessionTrait` methods (`cartGet/cartSet/cartDelete`). Key routes:
+- `POST /add-to-cart` — Add/increase/decrease product quantity (AJAX, returns JSON)
+- `GET /cart` — Cart page view with `dbValidatedCart()` prices
+- `POST /cart/remove` — Remove item entirely (AJAX, returns JSON)
+- `GET /checkout` — Checkout page (redirects to `/products` if cart empty)
+
+Cart JS (`resources/js/frontend/cart.js`) handles all AJAX operations: add-to-cart, quantity +/-, remove, cart badge updates, and cart page live total recalculation. The header cart badge is rendered server-side from `session('cart.products')` so it shows the correct count on every page.
+
 ### UUID Pattern
 
 User, Product, Order, and OrderProduct models generate UUIDs. User UUID is generated in the model's `creating` event. Product UUID uses MySQL's `DB::raw('UUID()')` default in migration.

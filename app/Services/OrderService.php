@@ -40,7 +40,7 @@ class OrderService extends BaseService
             'order_date_time' => date('Y-m-d H:i:s'),
             'order_status' => 'Processing',
             'payment_reference_code' => $cart['payment_reference_code'],
-            'payment_method' => PaymentMethod::STRIPE
+            'payment_method' => $cart['payment_method'] ?? PaymentMethod::STRIPE
         ];
 
         $prepare_response = [

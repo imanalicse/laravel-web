@@ -21,7 +21,6 @@ paypal
             })
                 .then((response) => response.json())
                 .then((response) => {
-                    debugger
                     if(response.is_success && response.data && response.data.id) {
                         return response.data.id;
                     }
